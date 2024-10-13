@@ -19,7 +19,6 @@ import { RouterLink, RouterView } from 'vue-router'
           <a href="" class="leading-[44px] px-2">iPad</a>
           <a href="" class="leading-[44px] px-2">iPhone</a>
           <a href="" class="leading-[44px] px-2">Watch</a>
-          <a href="" class="leading-[44px] px-2">Vision</a>
           <a href="" class="leading-[44px] px-2">AirPods</a>
           <a href="" class="leading-[44px] px-2">TV & Home</a>
           <a href="" class="leading-[44px] px-2">Entertainment</a>
@@ -42,7 +41,7 @@ import { RouterLink, RouterView } from 'vue-router'
         </div>
       </div>
     </nav>
-    <nav id="product-nav" class="sticky top-0 z-20 bg-white/80 backdrop-saturate-[180%] backdrop-blur-[20px]">
+    <!-- <nav id="product-nav" class="sticky top-0 z-20 bg-white/80 backdrop-saturate-[180%] backdrop-blur-[20px]">
       <div class="container max-w-screen-lg px-6 mx-auto">
         <div class="flex justify-between border-b border-black/15">
           <div class="brand">
@@ -56,7 +55,7 @@ import { RouterLink, RouterView } from 'vue-router'
           </div>
         </div>
       </div>
-    </nav>
+    </nav> -->
   </header>
   <RouterView />
 </template>
