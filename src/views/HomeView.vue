@@ -93,59 +93,12 @@ onMounted(() => {
         </div>
       </div>
     </section>
-    <!-- <section class="highlights pt-40 pb-52">
-      <div class="w-[87.5%] max-w-[1680px] mx-auto">
-        <h2 class="text-[56px] leading-none tracking-tighter font-semibold pb-20">Get the highlights.</h2>
-      </div>
-      <div class="relative highlights_slider">
-        <div
-          class="relative overflow-x-visible overflow-y-hidden snap-x snap-mandatory px-[max(6.25vw,(100vw-1680px)/2,env(safe-area-inset-left),env(safe-area-inset-right))]"
-          style="scrollbar-width: none;">
-          <ul class="w-fit list-none grid grid-flow-col auto-cols-[1fr] gap-5">
-            <li
-              class="w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-slate-200 snap-center flex justify-center items-center rounded-[28px]">
-              1</li>
-            <li
-              class="w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-slate-200 snap-center flex justify-center items-center rounded-[28px]">
-              2</li>
-            <li
-              class="w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-slate-200 snap-center flex justify-center items-center rounded-[28px]">
-              3</li>
-            <li
-              class="w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-slate-200 snap-center flex justify-center items-center rounded-[28px]">
-              4</li>
-            <li
-              class="w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-slate-200 snap-center flex justify-center items-center rounded-[28px]">
-              5</li>
-          </ul>
-        </div>
-        <div class="relative">
-          <div class="flex justify-center h-14">
-            <div class="h-full aspect-square me-4 rounded-[100vmax] bg-[rgba(232,232,232,.5)] backdrop-blur-lg"></div>
-            <div class="h-full rounded-[100vmax] bg-[rgba(232,232,232,.5)] backdrop-blur-lg flex items-center px-4">
-              <div class="h-2 flex">
-                <button
-                  class="relative h-full w-2 hover:w-12 transition-[width] mx-2 after:content-[''] after:absolute after:inset-0 after:bg-neutral-600 after:rounded-[100vmax]"></button>
-                <button
-                  class="relative h-full w-2 hover:w-12 transition-[width] mx-2 after:content-[''] after:absolute after:inset-0 after:bg-neutral-600 after:rounded-[100vmax]"></button>
-                <button
-                  class="relative h-full w-2 hover:w-12 transition-[width] mx-2 after:content-[''] after:absolute after:inset-0 after:bg-neutral-600 after:rounded-[100vmax]"></button>
-                <button
-                  class="relative h-full w-2 hover:w-12 transition-[width] mx-2 after:content-[''] after:absolute after:inset-0 after:bg-neutral-600 after:rounded-[100vmax]"></button>
-                <button
-                  class="relative h-full w-2 hover:w-12 transition-[width] mx-2 after:content-[''] after:absolute after:inset-0 after:bg-neutral-600 after:rounded-[100vmax]"></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
     <section class="highlights relative pt-40 pb-52 overflow-x-clip">
       <div class="w-[87.5%] max-w-[1680px] mx-auto">
         <h2 class="text-[56px] leading-none tracking-tighter font-semibold pb-20">Get the highlights.</h2>
       </div>
       <div ref="highlights_swiper"
-        class="highlights_swiper px-[max(6.25vw,(100vw-1680px)/2,env(safe-area-inset-left),env(safe-area-inset-right))] snap-x snap-mandatory">
+        class="highlights_swiper px-[max(6.25vw,(100vw-1680px)/2,env(safe-area-inset-left),env(safe-area-inset-right))]">
         <div class="swiper-wrapper">
           <div
             class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px]">
@@ -160,7 +113,7 @@ onMounted(() => {
             </div>
           </div>
           <div
-            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px] snap-center">
+            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px]">
             <div class="absolute inset-0">
               <img src="/images/hifi_static_xlarge.jpg" alt="" class="h-full object-cover">
             </div>
@@ -171,7 +124,7 @@ onMounted(() => {
             </div>
           </div>
           <div
-            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px] snap-center">
+            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px]">
             <div class="absolute inset-0">
               <img src="/images/anc_startframe_xlarge.jpg" alt="" class="h-full object-cover">
             </div>
@@ -182,7 +135,7 @@ onMounted(() => {
             </div>
           </div>
           <div
-            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px] snap-center">
+            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px]">
             <div class="absolute inset-0">
               <img src="/images/design_static_xlarge.jpg" alt="" class="h-full object-cover">
             </div>
@@ -193,7 +146,7 @@ onMounted(() => {
             </div>
           </div>
           <div
-            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px] snap-center">
+            class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px]">
             <div class="absolute inset-0">
               <img src="/images/usbc_static_xlarge.jpg" alt="" class="h-full object-cover">
             </div>
