@@ -48,17 +48,23 @@ const toggleSliderAutoplay = () => {
 const initHighlightsSwiper = () => {
   const highlightsSwiper = new Swiper(highlightsSwiperEl.value, highlightsSwiperParams);
 
-  highlightsSwiper.on('reachEnd', () => {
-    setTimeout(() => {
-      highlightsSwiper.autoplay.stop();
-      highlightsSwiperProps.isAutoplayEnded = true;
-    }, 3999);
-  })
-
   highlightsSwiper.on('slideChange', () => {
     highlightsSwiperProps.isAutoplayRunning = highlightsSwiper.autoplay.running;
-    highlightsSwiperProps.isAutoplayEnded = false;
-  })
+
+    if (!highlightsSwiper.isEnd) {
+      highlightsSwiperProps.isAutoplayEnded = false;
+    }
+  });
+
+  highlightsSwiper.on('reachEnd', () => {
+    if (highlightsSwiper.autoplay.running && highlightsSwiper.isEnd) {
+      setTimeout(() => {
+        highlightsSwiper.autoplay.stop();
+        highlightsSwiperProps.isAutoplayEnded = true;
+      }, 3999);
+    }
+  });
+
 }
 
 onMounted(() => {
