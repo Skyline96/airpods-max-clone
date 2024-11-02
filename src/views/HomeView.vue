@@ -1,13 +1,15 @@
 <script setup>
-import { onMounted, reactive, useTemplateRef } from 'vue';
+import { onMounted, ref, reactive, useTemplateRef } from 'vue';
 import Swiper from 'swiper';
 import { Pagination, Keyboard, Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-
 const highlightsSwiperEl = useTemplateRef('highlights_swiper');
-const colorsSwiperEl = useTemplateRef('colors_swiper');
+const highlightsSwiperProps = reactive({
+  isAutoplayRunning: true,
+  isAutoplayEnded: false
+});
 
 const highlightsSwiperParams = {
   modules: [Pagination, Keyboard, Autoplay],
@@ -27,26 +29,6 @@ const highlightsSwiperParams = {
     clickable: true,
   },
 }
-
-const colorsSwiperParams = {
-  modules: [Keyboard, Navigation],
-  slidesPerView: 1,
-  spaceBetween: 20,
-  grabCursor: true,
-  speed: 1500,
-  keyboard: {
-    enabled: true
-  },
-  navigation: {
-    prevEl: '.prev',
-    nextEl: '.next'
-  }
-}
-
-const highlightsSwiperProps = reactive({
-  isAutoplayRunning: true,
-  isAutoplayEnded: false
-});
 
 const toggleSliderAutoplay = () => {
   if (!highlightsSwiperEl.value.swiper.autoplay.running) {
@@ -82,8 +64,38 @@ const initHighlightsSwiper = () => {
   });
 }
 
+const colorsSwiperEl = useTemplateRef('colors_swiper');
+const colorVariant = ref('midnight');
+
+const colorsSwiperParams = {
+  modules: [Keyboard, Navigation],
+  slidesPerView: 1,
+  spaceBetween: 20,
+  grabCursor: true,
+  speed: 1500,
+  keyboard: {
+    enabled: true
+  },
+  navigation: {
+    prevEl: '.prev',
+    nextEl: '.next'
+  }
+}
+
+const availableColorVariants = [
+  { colorName: 'midnight', colorShadeLight: '#2a3139', colorShadeDark: '#22252a' },
+  { colorName: 'starlight', colorShadeLight: '#ccbeb1', colorShadeDark: '#e9e1d4' },
+  { colorName: 'blue', colorShadeLight: '#91a9b5', colorShadeDark: '#64727d' },
+  { colorName: 'purple', colorShadeLight: '#afa6bb', colorShadeDark: '#dad7e0' },
+  { colorName: 'orange', colorShadeLight: '#e2a48d', colorShadeDark: '#ffc09d' }
+];
+
+const isColorVariantActive = (color) => {
+  return colorVariant.value == color;
+}
+
 const initColorsSwiper = () => {
-  const colorsSwiper = new Swiper(colorsSwiperEl.value, colorsSwiperParams);
+  new Swiper(colorsSwiperEl.value, colorsSwiperParams);
 }
 
 onMounted(() => {
@@ -224,26 +236,31 @@ onMounted(() => {
           <div
             class="swiper-slide relative overflow-hidden w-[min(max(87.5vw,280px),1680px)] min-h-[740px] bg-[rgb(232,232,237)] rounded-[28px]">
             <div class="absolute inset-0">
-              <img src="/images/colors/bento_1_airpod_max_midnight_xlarge.jpg" alt="" class="h-full object-cover">
+              <img :src="`/images/colors/bento_1_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                class="h-full object-cover">
             </div>
           </div>
           <div class="swiper-slide w-[min(max(87.5vw,280px),1680px)] min-h-[740px]">
             <div class="absolute inset-0 grid grid-cols-2 gap-[20px]">
               <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
-                <img src="/images/colors/bento_2_airpod_max_midnight_xlarge.jpg" alt="" class="min-h-full object-cover">
+                <img :src="`/images/colors/bento_2_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  class="min-h-full object-cover">
               </div>
               <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
-                <img src="/images/colors/bento_3_airpod_max_midnight_xlarge.jpg" alt="" class="min-h-full object-cover">
+                <img :src="`/images/colors/bento_3_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  class="min-h-full object-cover">
               </div>
             </div>
           </div>
           <div class="swiper-slide w-[min(max(87.5vw,280px),1680px)] min-h-[740px]">
             <div class="absolute inset-0 grid grid-cols-2 gap-[20px]">
               <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
-                <img src="/images/colors/bento_4_airpod_max_midnight_xlarge.jpg" alt="" class="min-h-full object-cover">
+                <img :src="`/images/colors/bento_4_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  class="min-h-full object-cover">
               </div>
               <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
-                <img src="/images/colors/bento_5_airpod_max_midnight_xlarge.jpg" alt="" class="min-h-full object-cover">
+                <img :src="`/images/colors/bento_5_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  class="min-h-full object-cover">
               </div>
             </div>
           </div>
@@ -270,6 +287,18 @@ onMounted(() => {
                 </path>
               </svg>
             </button>
+          </div>
+        </div>
+        <div class="sticky bottom-8 inset-x-0 max-w-max mx-auto my-8 text-center h-14 z-10">
+          <div class="h-full bg-[rgba(232,232,237,0.7)] backdrop-blur-lg rounded-[100vmax] overflow-hidden">
+            <ul class="list-none color_swatches h-full inline-flex items-center mx-2">
+              <li v-for="color in availableColorVariants" class="w-7 h-7 mx-2">
+                <input type="radio" name="color_swatch" v-model="colorVariant" :value="color.colorName"
+                  class="appearance-none relative h-full w-full rounded-[100vmax] focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-black/60 after:content-[''] after:absolute after:-inset-[1px] after:rounded-[inherit] after:bg-gradient-to-b after:from-black/60 after:to-55% after:-z-10"
+                  :class="isColorVariantActive(color.colorName) ? 'outline outline-2 outline-offset-4 outline-black/60' : ''"
+                  :style="`background:linear-gradient(0deg, ${color.colorShadeLight} 50%, ${color.colorShadeDark} 0);`" />
+              </li>
+            </ul>
           </div>
         </div>
       </div>
