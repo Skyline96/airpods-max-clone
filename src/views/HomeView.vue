@@ -133,7 +133,7 @@ const setTabPosition = () => {
 };
 
 // Watch for changes in the active tab index and update the highlight position
-watch(activeTabIndex, () => {
+watch([hifiDetailsTabRefs, activeTabIndex], () => {
   nextTick(() => {
     setTabPosition();
   });
@@ -152,7 +152,6 @@ const isTabActive = (index) => {
 onMounted(() => {
   initHighlightsSwiper();
   initColorsSwiper();
-  setTabPosition();
 })
 </script>
 
