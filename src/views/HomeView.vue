@@ -420,42 +420,43 @@ onMounted(() => {
             <div
               class="relative pt-20 pb-10 rounded-[28px] text-white bg-[linear-gradient(50deg,#94afbd,#597d92_36%,#000_85%)]">
               <div class="modal_content w-[calc(87.5%+20px)] max-w-[1680px] flex flex-col items-center mx-auto">
-                <h2 class="modal_header text-[56px] leading-[1.15] tracking-tight font-semibold">
-                  High-fidelity details.
-                </h2>
-                <div
-                  class="hifi_details_tabs_container h-11 inline-flex flex-nowrap text-nowrap items-center text-sm text-white p-1 my-12 bg-[rgba(66,66,69,0.7)] backdrop-blur rounded-[100vmax]">
-                  <span
-                    class="absolute inset-y-1 -z-10 flex overflow-hidden rounded-[100vmax] transition-all duration-300"
-                    :style="{ left: `${tabHighlightLeft}px`, width: `${tabHighlightWidth}px` }">
-                    <span class="h-full w-full rounded-[inherit] bg-white"></span>
-                  </span>
-                  <div role="tablist">
-                    <button ref="hifi_details_tabs" v-for="(hifiDetailsTab, index) in hifiDetailsTabs"
-                      class="h-full px-4 text-nowrap transition-colors focus:outline-none"
-                      :class="isTabActive(index) ? 'text-black duration-150 delay-150 ease-in' : 'duration-150 ease-out'"
-                      :key="hifiDetailsTab.id" @click="setActiveTab(index)" role="tab"
-                      :aria-selected="isTabActive(index)" :aria-controls="`${hifiDetailsTab.id}_panel`">
-                      {{ hifiDetailsTab.title }}
-                    </button>
-                  </div>
-                </div>
                 <div :id="`${hifiDetailsTabs[activeTabIndex].id}_panel`"
-                  class="w-full min-h-[700px] grid grid-cols-2 gap-8">
+                  class="w-full min-h-[85vh] grid grid-cols-2 gap-8">
                   <div class="relative">
                     <div class="absolute inset-0 flex justify-center">
-                      <img :src="`${hifiDetailsTabs[activeTabIndex].imgSrc}`" alt="" class="max-h-full object-contain">
+                      <img :src="`${hifiDetailsTabs[activeTabIndex].imgSrc}`" alt="" class="max-h-full">
                     </div>
                   </div>
                   <div class="relative">
-                    <div class="absolute inset-0 flex flex-col">
-                      <p class=" text-[21px] font-semibold leading-[1.15] tracking-tight mt-40">
+                    <div class="absolute inset-0 flex flex-col pt-28">
+                      <h2 class="modal_header text-[56px] leading-[1.15] tracking-tight font-semibold">
+                        High-fidelity details.
+                      </h2>
+                      <div
+                        class="hifi_details_tabs_container w-fit h-11 flex items-center flex-nowrap text-nowrap text-sm text-white p-1 mt-12 mb-16 bg-[rgba(66,66,69,0.7)] backdrop-blur rounded-[100vmax]">
+                        <span
+                          class="absolute inset-y-1 -z-10 flex overflow-hidden rounded-[100vmax] transition-all duration-300"
+                          :style="{ left: `${tabHighlightLeft}px`, width: `${tabHighlightWidth}px` }">
+                          <span class="h-full w-full rounded-[inherit] bg-white"></span>
+                        </span>
+                        <div role="tablist">
+                          <button ref="hifi_details_tabs" v-for="(hifiDetailsTab, index) in hifiDetailsTabs"
+                            class="h-full px-4 text-nowrap transition-colors focus:outline-none"
+                            :class="isTabActive(index) ? 'text-black duration-150 delay-150 ease-in' : 'duration-150 ease-out'"
+                            :key="hifiDetailsTab.id" @click="setActiveTab(index)" role="tab"
+                            :aria-selected="isTabActive(index)" :aria-controls="`${hifiDetailsTab.id}_panel`">
+                            {{ hifiDetailsTab.title }}
+                          </button>
+                        </div>
+                      </div>
+                      <p class=" text-[21px] font-semibold leading-[1.15] tracking-tight">
                         {{ hifiDetailsTabs[activeTabIndex].description }}
                       </p>
                     </div>
                   </div>
                 </div>
-                <button @click="isHifiSoundModalOpen = false" class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-white">
+                <button @click="isHifiSoundModalOpen = false"
+                  class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-white">
                   <svg class="icon_control_plus rotate-45" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
                     <path
                       d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
