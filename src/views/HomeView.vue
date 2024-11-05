@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, reactive, useTemplateRef } from 'vue';
+import { onMounted, ref, reactive, useTemplateRef, watch, nextTick } from 'vue';
 import Swiper from 'swiper';
 import { Pagination, Keyboard, Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -98,9 +98,61 @@ const initColorsSwiper = () => {
   new Swiper(colorsSwiperEl.value, colorsSwiperParams);
 }
 
+const isHifiSoundModalOpen = ref(false);
+const hifiDetailsTabs = [
+  {
+    id: 'microphones',
+    title: 'Microphones',
+    description: 'To cancel unwanted external noise, AirPods Max use six outward-facing microphones to detect noise in your environment, and two inward-facing microphones to measure what you’re hearing. Beamforming microphones help isolate your voice on phone calls, so it’s heard clearly — even in windy situations.',
+    imgSrc: '/images/hifi-sound/modal/audio_bc_microphone_large.png'
+  },
+  {
+    id: 'driver',
+    title: 'Driver',
+    description: 'The Apple-designed dynamic driver produces an extended frequency range that uncovers the rich details of every sound — delivering your favorite songs with previously unheard texture and accuracy.',
+    imgSrc: '/images/hifi-sound/modal/audio_bc_driver_large.png'
+  },
+  {
+    id: 'playback',
+    title: 'Distortionless Playback',
+    description: 'Modeled after those in high-end floor-standing speakers, the driver’s dual-neodymium ring magnet motor minimizes total harmonic distortion across the entire audible range. The result is consistently clear playback, even at full volume.',
+    imgSrc: '/images/hifi-sound/modal/audio_bc_distortionless_playback_large.png'
+  }
+];
+const hifiDetailsTabRefs = useTemplateRef('hifi_details_tabs');
+const activeTabIndex = ref(0); // Default active tab index
+const tabHighlightWidth = ref(0);
+const tabHighlightLeft = ref(0);
+
+const setTabPosition = () => {
+  if (hifiDetailsTabRefs.value) {
+    const currentTab = hifiDetailsTabRefs.value[activeTabIndex.value];
+    tabHighlightLeft.value = currentTab?.offsetLeft || 0;
+    tabHighlightWidth.value = currentTab?.clientWidth || 0;
+  }
+};
+
+// Watch for changes in the active tab index and update the highlight position
+watch(activeTabIndex, () => {
+  nextTick(() => {
+    setTabPosition();
+  });
+});
+
+// Set active tab function
+const setActiveTab = (index) => {
+  activeTabIndex.value = index;
+};
+
+// Check if tab is active
+const isTabActive = (index) => {
+  return activeTabIndex.value === index;
+};
+
 onMounted(() => {
   initHighlightsSwiper();
   initColorsSwiper();
+  setTabPosition();
 })
 </script>
 
@@ -303,9 +355,9 @@ onMounted(() => {
         </div>
       </div>
     </section>
-    <section class="hifi_sound_details relative">
-      <div class="details-bg absolute inset-0 -z-10">
-        <img src="/images/audio_airpod_max_large.jpg" alt="" class="min-h-full object-cover">
+    <section class="hifi_sound relative">
+      <div class="hifi_sound_bg absolute inset-0 -z-10">
+        <img src="/images/hifi-sound/audio_airpod_max_large.jpg" alt="" class="min-h-full object-cover">
       </div>
       <div
         class="flex flex-col justify-between items-center w-[87.5%] max-w-[1680px] min-h-[2280px] mx-auto pt-40 pb-[88px] text-white">
@@ -335,7 +387,7 @@ onMounted(() => {
           </div>
           <div class="">
             <div class="h-[60px] mb-[18px]">
-              <svg class="hifi-sound-detail-icon-adaptive-eq max-h-full fill-current" xmlns="http://www.w3.org/2000/svg"
+              <svg class="hifi_sound_detail_icon_adaptive_eq max-h-full fill-current" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 21.1 25.1">
                 <path class="cls-1"
                   d="M20.55,16.59A.55.55,0,0,1,20,16V9a.55.55,0,0,1,1.1,0v7A.55.55,0,0,1,20.55,16.59ZM17.1,21.67V3.42a.55.55,0,0,0-1.1,0V21.67a.55.55,0,0,0,1.1,0Zm-3.89-3.12v-12A.55.55,0,0,0,12.66,6a.55.55,0,0,0-.55.55v12a.55.55,0,0,0,.55.55A.55.55,0,0,0,13.21,18.55Zm-4.11,6V.55A.55.55,0,0,0,8.55,0,.55.55,0,0,0,8,.55v24a.55.55,0,0,0,.55.55A.55.55,0,0,0,9.1,24.55Zm-4-5v-14a.55.55,0,0,0-1.1,0v14a.55.55,0,1,0,1.1,0Zm-4-4.75V10.3a.55.55,0,0,0-.55-.55A.55.55,0,0,0,0,10.3v4.5a.55.55,0,0,0,.55.55A.55.55,0,0,0,1.1,14.8Z">
@@ -351,12 +403,12 @@ onMounted(() => {
         </div>
       </div>
       <div class="sticky bottom-8 inset-x-0 max-w-max mx-auto mt-8 text-center h-14 z-10">
-        <button
+        <button @click="isHifiSoundModalOpen = !isHifiSoundModalOpen;"
           class="h-full bg-[rgba(66,66,69,0.7)] text-white backdrop-blur rounded-[100vmax] px-1 overflow-hidden outline-blue-500 focus:outline focus:outline-2">
           <span class="h-full inline-flex items-center gap-4 ms-5 me-2">
-            <span class=" text-[17px] font-semibold">Learn more about high-fidelity audio</span>
+            <span class="text-[17px] font-semibold">Learn more about high-fidelity audio</span>
             <span class="relative h-9 w-9 rounded-[100vmax] bg-blue-500">
-              <svg class="icon-control-plus fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+              <svg class="icon_control_plus fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
                 <path
                   d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
                 </path>
@@ -364,6 +416,57 @@ onMounted(() => {
             </span>
           </span>
         </button>
+        <Teleport to="body">
+          <div v-if="isHifiSoundModalOpen" class="fixed inset-0 py-4 px-2 z-50 backdrop-blur-lg overflow-y-scroll">
+            <div
+              class="relative pt-20 pb-10 rounded-[28px] text-white bg-[linear-gradient(50deg,#94afbd,#597d92_36%,#000_85%)]">
+              <div class="modal_content w-[calc(87.5%+20px)] max-w-[1680px] flex flex-col items-center mx-auto">
+                <h2 class="modal_header text-[56px] leading-[1.15] tracking-tight font-semibold">
+                  High-fidelity details.
+                </h2>
+                <div
+                  class="hifi_details_tabs_container h-11 inline-flex flex-nowrap text-nowrap items-center text-sm text-white p-1 my-12 bg-[rgba(66,66,69,0.7)] backdrop-blur rounded-[100vmax]">
+                  <span
+                    class="absolute inset-y-1 -z-10 flex overflow-hidden rounded-[100vmax] transition-all duration-300"
+                    :style="{ left: `${tabHighlightLeft}px`, width: `${tabHighlightWidth}px` }">
+                    <span class="h-full w-full rounded-[inherit] bg-white"></span>
+                  </span>
+                  <div role="tablist">
+                    <button ref="hifi_details_tabs" v-for="(hifiDetailsTab, index) in hifiDetailsTabs"
+                      class="h-full px-4 text-nowrap transition-colors focus:outline-none"
+                      :class="isTabActive(index) ? 'text-black duration-150 delay-150 ease-in' : 'duration-150 ease-out'"
+                      :key="hifiDetailsTab.id" @click="setActiveTab(index)" role="tab"
+                      :aria-selected="isTabActive(index)" :aria-controls="`${hifiDetailsTab.id}_panel`">
+                      {{ hifiDetailsTab.title }}
+                    </button>
+                  </div>
+                </div>
+                <div :id="`${hifiDetailsTabs[activeTabIndex].id}_panel`"
+                  class="w-full min-h-[700px] grid grid-cols-2 gap-8">
+                  <div class="relative">
+                    <div class="absolute inset-0 flex justify-center">
+                      <img :src="`${hifiDetailsTabs[activeTabIndex].imgSrc}`" alt="" class="max-h-full object-contain">
+                    </div>
+                  </div>
+                  <div class="relative">
+                    <div class="absolute inset-0 flex flex-col">
+                      <p class=" text-[21px] font-semibold leading-[1.15] tracking-tight mt-40">
+                        {{ hifiDetailsTabs[activeTabIndex].description }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <button @click="isHifiSoundModalOpen = false" class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-white">
+                  <svg class="icon_control_plus rotate-45" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+                    <path
+                      d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
+                    </path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </Teleport>
       </div>
     </section>
   </main>
