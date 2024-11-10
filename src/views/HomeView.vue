@@ -149,6 +149,9 @@ const isTabActive = (index) => {
   return activeTabIndex.value === index;
 };
 
+
+const isProductDesignModalOpen = ref(false)
+
 onMounted(() => {
   initHighlightsSwiper();
   initColorsSwiper();
@@ -522,6 +525,144 @@ onMounted(() => {
                 class="block min-w-max w-[1414px] h-[884px]">
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    <section class="product_design relative">
+      <div class="w-[87.5%] max-w-[1680px] py-40 mx-auto flex flex-col justify-center items-center">
+        <div class="section_header text-center mb-10">
+          <h2 class="text-[110px] leading-[1.15] tracking-[-3px] font-semibold">Everything designed in perfect harmony.
+          </h2>
+        </div>
+        <div class="product_design_img relative z-10">
+          <img src="/images/design/design_airpod_max_large.png" alt="" class="w-[1283px] h-[1283px]">
+        </div>
+        <div class="product_design_description text-center text-[#707070]">
+          <p class="text-[28px] leading-[1.15] text-balance font-semibold">From cushion to canopy, AirPods Max are
+            designed for an uncompromising fit with unequalled comfort that creates the optimal acoustic seal for many
+            different head shapes — fully immersing you in every sound.</p>
+        </div>
+        <div class="sticky bottom-8 inset-x-0 max-w-max mx-auto mt-8 text-center h-14 z-10">
+          <button @click="isProductDesignModalOpen = !isProductDesignModalOpen"
+            class="group h-full bg-[rgba(232,232,232,0.7)] backdrop-blur rounded-[100vmax] px-1 overflow-hidden outline-blue-500 focus:outline focus:outline-2">
+            <span class="h-full inline-flex items-center gap-4 ms-5 me-2">
+              <span class="text-[17px] font-semibold">Dive deeper into design</span>
+              <span class="relative h-9 w-9 rounded-[100vmax] bg-blue-500">
+                <svg class="icon_control_plus fill-white opacity-80 group-hover:opacity-100"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+                  <path
+                    d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
+                  </path>
+                </svg>
+              </span>
+            </span>
+          </button>
+          <Teleport to="body">
+            <div v-if="isProductDesignModalOpen"
+              class="fixed inset-0 py-4 px-2 z-50 bg-black/50 backdrop-blur-lg overflow-y-scroll">
+              <div class="relative rounded-[28px] bg-white overflow-hidden">
+                <div class="modal_content text-center grid grid-cols-12 gap-y-5">
+                  <div class="col-span-12">
+                    <div
+                      class="relative min-h-[1151px] bg-[rgb(247,247,245)] flex flex-col items-center justify-between">
+                      <h2
+                        class="modal_header z-10 max-w-[756px] text-[56px] leading-[1.15] tracking-tight font-semibold mt-32">
+                        A radically original composition.
+                      </h2>
+                      <p
+                        class="box-content z-10 max-w-[580px] text-[21px] text-[#424245] font-semibold leading-tight tracking-tight p-5 mb-16">
+                        <span class="text-[#1d1d1f]">Digital Crown.</span> Press the Digital Crown to play and pause
+                        music or mute and unmute yourself on calls, and press twice to skip between tracks or end calls.
+                        Turn it to precisely control volume.
+                      </p>
+                      <div class="absolute bottom-0 z-0 flex justify-center">
+                        <img src="/images/design/modal/design_bc_digital_crown_xlarge.jpg" alt=""
+                          class="block w-[1900px] h-[1076px] min-w-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-span-12 px-3">
+                    <div
+                      class="relative bg-slate-200 min-h-[900px] rounded-[28px] flex flex-col items-center justify-end overflow-hidden">
+                      <p
+                        class="box-content z-10 max-w-[460px] text-[21px] text-[#6c6c6c] font-semibold leading-tight tracking-tight p-5 mb-52">
+                        <span class="text-[#1d1d1f]">Canopy.</span> The canopy spanning the headband is made from a
+                        breathable knit mesh, distributing weight to reduce on‑head pressure.
+                      </p>
+                      <div class="absolute z-0 flex justify-center">
+                        <img src="/images/design/modal/design_bc_canopy_large.jpg" alt=""
+                          class="block w-[1900px] h-[980px] min-w-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-span-6 px-3">
+                    <div
+                      class="relative bg-slate-200 min-h-[900px] rounded-[28px] flex flex-col items-center justify-end overflow-hidden">
+                      <p
+                        class="box-content max-w-[540px] z-10 text-[21px] text-[#6c6c6c] font-semibold leading-tight tracking-tight mt-[734px] py-12 px-10">
+                        <span class="text-[#1d1d1f]">Cushions.</span> Crafted with acoustically engineered memory foam
+                        and a custom-designed mesh textile, the pillow-like softness of the ear cushions gently creates
+                        an immersive seal that is the foundation of incredible sound.
+                      </p>
+                      <div class="absolute top-0 z-0 flex justify-center">
+                        <img src="/images/design/modal/design_bc_cushions_large.jpg" alt="" class="block min-w-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-span-6 px-3">
+                    <div
+                      class="relative bg-slate-200 min-h-[900px] rounded-[28px] flex flex-col items-center justify-end overflow-hidden">
+                      <p
+                        class="box-content max-w-[540px] z-10 text-[21px] text-[#6c6c6c] font-semibold leading-tight tracking-tight mt-[734px] py-12 px-10">
+                        <span class="text-[#1d1d1f]">Cups.</span> The beautifully anodized aluminum cups feature a
+                        revolutionary mechanism that allows each cup to rotate independently and balance pressure.
+                      </p>
+                      <div class="absolute top-0 z-0 flex justify-center">
+                        <img src="/images/design/modal/design_bc_cups_large.jpg" alt="" class="block min-w-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-span-12 px-3">
+                    <div
+                      class="relative bg-slate-200 min-h-[900px] rounded-[28px] flex flex-col items-center justify-end overflow-hidden">
+                      <p
+                        class="box-content z-10 max-w-[540px] text-[21px] text-[#ffffffcc] font-semibold leading-tight tracking-tight p-5 mb-32">
+                        <span class="text-[#f5f5f7]">Telescoping arms.</span> The telescoping arms smoothly extend from
+                        the stainless steel frame — staying where you set them for a consistent fit and seal.
+                      </p>
+                      <div class="absolute inset-0 z-0 flex justify-center">
+                        <img src="/images/design/modal/design_bc_telescoping_arms_large.jpg" alt=""
+                          class="block w-[1900px] h-[900px] min-w-max">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-span-12 px-3">
+                    <div
+                      class="relative bg-slate-200 min-h-[900px] rounded-[28px] flex flex-col items-center justify-end overflow-hidden">
+                      <p
+                        class="box-content z-10 max-w-[540px] text-[21px] text-[#6c6c6c] font-semibold leading-tight tracking-tight p-5 mb-12">
+                        <span class="text-[#1d1d1f]">Smart Case.</span> When stored in their soft, slim Smart Case,
+                        AirPods Max enter an ultra‑low‑power state that preserves charge.
+                      </p>
+                      <div class="absolute -bottom-16 z-0 flex justify-center items-center">
+                        <img src="/images/design/modal/design_bc_smart_case_large.jpg" alt=""
+                          class="block w-[1900px] h-[992px] min-w-max">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button @click="isProductDesignModalOpen = false"
+                  class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-[rgb(29,29,31)]">
+                  <svg class="icon_control_plus rotate-45 fill-white" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 36 36">
+                    <path
+                      d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
+                    </path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </Teleport>
         </div>
       </div>
     </section>
