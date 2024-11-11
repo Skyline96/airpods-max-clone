@@ -152,6 +152,13 @@ const isTabActive = (index) => {
 
 const isProductDesignModalOpen = ref(false)
 
+// Hide body scrollbar if modal is open
+const toggleBodyScrollbar = () => {
+  isHifiSoundModalOpen.value || isProductDesignModalOpen.value ?
+    document.body.style.overflow = 'hidden' :
+    document.body.style.overflow = 'auto';
+}
+
 onMounted(() => {
   initHighlightsSwiper();
   initColorsSwiper();
@@ -405,7 +412,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="sticky bottom-8 inset-x-0 max-w-max mx-auto mt-8 text-center h-14 z-10">
-        <button @click="isHifiSoundModalOpen = !isHifiSoundModalOpen;"
+        <button @click="{ isHifiSoundModalOpen = !isHifiSoundModalOpen; toggleBodyScrollbar() }"
           class="h-full bg-[rgba(66,66,69,0.7)] text-white backdrop-blur rounded-[100vmax] px-1 overflow-hidden outline-blue-500 focus:outline focus:outline-2">
           <span class="h-full inline-flex items-center gap-4 ms-5 me-2">
             <span class="text-[17px] font-semibold">Learn more about high-fidelity audio</span>
@@ -458,7 +465,7 @@ onMounted(() => {
                     </div>
                   </div>
                 </div>
-                <button @click="isHifiSoundModalOpen = false"
+                <button @click="{ isHifiSoundModalOpen = false; toggleBodyScrollbar() }"
                   class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-white">
                   <svg class="icon_control_plus rotate-45" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
                     <path
@@ -543,7 +550,7 @@ onMounted(() => {
             different head shapes — fully immersing you in every sound.</p>
         </div>
         <div class="sticky bottom-8 inset-x-0 max-w-max mx-auto mt-8 text-center h-14 z-10">
-          <button @click="isProductDesignModalOpen = !isProductDesignModalOpen"
+          <button @click="{ isProductDesignModalOpen = !isProductDesignModalOpen; toggleBodyScrollbar() }"
             class="group h-full bg-[rgba(232,232,232,0.7)] backdrop-blur rounded-[100vmax] px-1 overflow-hidden outline-blue-500 focus:outline focus:outline-2">
             <span class="h-full inline-flex items-center gap-4 ms-5 me-2">
               <span class="text-[17px] font-semibold">Dive deeper into design</span>
@@ -651,7 +658,7 @@ onMounted(() => {
                     </div>
                   </div>
                 </div>
-                <button @click="isProductDesignModalOpen = false"
+                <button @click="{ isProductDesignModalOpen = false; toggleBodyScrollbar() }"
                   class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-[rgb(29,29,31)]">
                   <svg class="icon_control_plus rotate-45 fill-white" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 36 36">
