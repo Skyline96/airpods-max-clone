@@ -154,7 +154,7 @@ const isProductDesignModalOpen = ref(false)
 
 // Hide body scrollbar if modal is open
 const toggleBodyScrollbar = () => {
-  isHifiSoundModalOpen.value || isProductDesignModalOpen.value ?
+  isHifiSoundModalOpen.value || isProductDesignModalOpen.value || isWhyAppleSwiperModalOpen.value ?
     document.body.style.overflow = 'hidden' :
     document.body.style.overflow = 'auto';
 }
@@ -180,10 +180,112 @@ const initBatteryDetailsSwiper = () => {
   new Swiper(batteryDetailsSwiperEl.value, batteryDetailsSwiperParams);
 }
 
+const whyAppleSwiperEl = useTemplateRef('why_apple_swiper');
+const whyAppleSwiperActiveSlideId = ref(0);
+const whyAppleSwiperActiveSlideIndex = ref(0);
+const isWhyAppleSwiperModalOpen = ref(false);
+
+const setWhyAppleSwiperActiveSlide = (id, index) => {
+  whyAppleSwiperActiveSlideId.value = id;
+  whyAppleSwiperActiveSlideIndex.value = index;
+  isWhyAppleSwiperModalOpen.value = true;
+};
+
+const whyAppleSwiperParams = {
+  modules: [Keyboard, Navigation],
+  slidesPerView: "auto",
+  spaceBetween: 20,
+  grabCursor: true,
+  speed: 500,
+  keyboard: {
+    enabled: true
+  },
+  navigation: {
+    prevEl: '.prev',
+    nextEl: '.next'
+  }
+}
+
+const whyAppleSwiperSlides = [
+  {
+    id: 1,
+    icon: '/images/why-apple/icon_emoji_face_grinning_large.png',
+    title: 'Personalize your AirPods for free.',
+    description: 'Engrave your AirPods with your initials or favorite emoji — free. Only at Apple.',
+    modalContent: {
+      topic: 'Engraving',
+      headline: 'Add a message that lasts.',
+      summary: 'Choose from new engraving options. It’s the perfect way to personalize your AirPods. Add a special message, name, or birthday. Even combine text and numbers with your favorite emoji.',
+      linkText: 'Learn more',
+      link: ''
+    }
+  },
+  {
+    id: 2,
+    icon: '/images/why-apple/icon_truck_box_large.png',
+    title: 'Get flexible delivery and easy&nbsp;pickup.',
+    description: 'Choose 2‑hour delivery from an Apple&nbsp;Store, free delivery, or easy pickup&nbsp;options.',
+    modalContent: {
+      topic: 'Delivery and Pickup',
+      headline: 'Flexible delivery and pickup options.',
+      summary: 'Get your new Apple products quickly and easily with 2‑hour delivery from an Apple Store, free next‑day delivery, or convenient Apple pickup options.',
+      linkText: 'Learn more',
+      link: ''
+    }
+  },
+  {
+    id: 3,
+    icon: '/images/why-apple/icon_applecard_large.png',
+    title: 'Pay over time, interest‑free.',
+    description: 'When you choose to check out with Apple&nbsp;Card Monthly Installments.',
+    modalContent: {
+      topic: 'Ways to Buy',
+      headline: 'Apple Card Monthly Installments',
+      summary: 'Pay for your new AirPods over time, interest‑free with Apple Card.† Simply choose to check out with Apple Card Monthly Installments as your payment option when you make your purchase. And enjoy 3% Daily Cash back, all up front. Terms apply.',
+      linkText: 'Learn more',
+      link: ''
+    }
+  },
+  {
+    id: 4,
+    icon: '/images/why-apple/icon_message_and_message_large.png',
+    title: 'Shop live with a&nbsp;Specialist.',
+    description: 'Let us guide you live over video and answer all of your questions.',
+    modalContent: {
+      topic: 'Guided Video Shopping',
+      headline: 'Shop live with a Specialist.',
+      summary: 'We can help you choose the product you need while guiding you through the online Apple Store. You won’t appear on camera. Available 7 a.m.–7 p.m. PT.',
+      linkText: 'Shop together with a Specialist',
+      link: ''
+    }
+  },
+  {
+    id: 5,
+    icon: '/images/why-apple/icon_app_applestore_large.png',
+    title: 'Explore a shopping experience designed around you.',
+    description: 'Use the Apple Store app to get a more personal way to shop.',
+    modalContent: {
+      topic: 'Apple Store App',
+      headline: 'Shop in the Apple Store app, tailored specifically for you.',
+      summary: 'Get personalized product recommendations, compare models, access your Saved Items, and track your orders. Plus, opt in today to get updates on new products, promotions, flexible payment options, and store events.',
+      extra: 'Scan the QR code to get started.',
+      extraImage: '/images/why-apple/boc_qr_code_large.jpg',
+      linkText: '',
+      link: ''
+    }
+  },
+];
+
+
+const initWhyAppleSwiper = () => {
+  new Swiper(whyAppleSwiperEl.value, whyAppleSwiperParams);
+}
+
 onMounted(() => {
   initHighlightsSwiper();
   initColorsSwiper();
   initBatteryDetailsSwiper();
+  initWhyAppleSwiper();
 })
 </script>
 
@@ -806,7 +908,412 @@ onMounted(() => {
         </div>
       </div>
     </section>
+    <section class="why_apple overflow-x-clip bg-[#f5f5f7] py-40">
+      <div class="section_header">
+        <div class="w-[87.5%] max-w-[1680px] mx-auto">
+          <h2 class="text-[56px] leading-none tracking-tight font-semibold pb-20">Why Apple is the
+            best<br> place to buy AirPods.</h2>
+        </div>
+        <div ref="why_apple_swiper"
+          class="why_apple_swiper px-[max(6.25vw,(100vw-1680px)/2,env(safe-area-inset-left),env(safe-area-inset-right))]">
+          <div class="swiper-wrapper">
+            <div v-for="(whyAppleSwiperSlide, index) in whyAppleSwiperSlides"
+              class="swiper-slide max-w-[405px] !h-auto">
+              <div
+                class="relative h-full w-full rounded-[28px] bg-white text-[#1d1d1f] hover:scale-[1.02] transition-transform duration-300">
+                <div class="pt-7 pe-[76px] pb-[52px] ps-8 h-full">
+                  <div class="">
+                    <img :src="whyAppleSwiperSlide.icon" height="56" alt="">
+                  </div>
+                  <div class="mt-[15px] mb-5">
+                    <h3 class="text-[28px] font-semibold leading-[1.15]"><span
+                        v-html="whyAppleSwiperSlide.title"></span></h3>
+                    <p class="text-[17px] leading-tight tracking-tight text-balance mt-[15px]">
+                      <span v-html="whyAppleSwiperSlide.description"></span>
+                    </p>
+                  </div>
+                </div>
+                <button class="absolute inset-0 rounded-[inherit] focus-visible:outline-[#0066cc]"
+                  @click="{ setWhyAppleSwiperActiveSlide(whyAppleSwiperSlide.id, index); toggleBodyScrollbar(); }">
+                  <div class="absolute bottom-4 right-4 h-9 w-9 rounded-[100vmax] bg-current">
+                    <svg class="icon_control_plus fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+                      <path
+                        d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
+                      </path>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <Teleport to="body">
+              <div v-if="isWhyAppleSwiperModalOpen"
+                class="fixed block top-0 left-0 w-full h-full bg-black/50 backdrop-blur-lg z-50 overflow-y-scroll">
+                <div class="flex items-center min-h-full">
+                  <div class="w-[816px] mx-auto py-10">
+                    <div class="modal_content__wrapper relative rounded-[28px] bg-white p-[76px]">
+                      <div class="modal_content__header">
+                        <p class="text-lg font-medium tracking-wide">{{
+                          whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.topic }}</p>
+                        <h3 class="text-[56px] leading-none tracking-tight font-semibold mt-3">
+                          {{ whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.headline }}
+                        </h3>
+                      </div>
+                      <div class="modal_content__body mt-5 font-medium">
+                        <p class="text-lg">{{ whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.summary
+                          }}
+                        </p>
+                        <p v-if="whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.extra"
+                          class="text-lg mt-8">{{
+                            whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.extra
+                          }}</p>
+                        <img v-if="whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.extraImage"
+                          :src="whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.extraImage" alt=""
+                          class="mt-10">
+                      </div>
+                      <div v-if="whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.linkText !== ''"
+                        class="modal_content__footer mt-10">
+                        <a :href="whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.link"
+                          target="_blank" rel="noopener noreferrer"
+                          class="relative text-lg leading-none text-[#0066cc] hover:underline">
+                          {{ whyAppleSwiperSlides[whyAppleSwiperActiveSlideIndex].modalContent.linkText }}
+                          <span
+                            class="relative after:content-[''] after:absolute after:w-3 after:h-5 after:leading-none after:[mask-image:url('/images/icon_chevron_large.svg')] after:[mask-repeat:no-repeat] after:[mask-position:75%_85%] after:bg-current"></span></a>
+                      </div>
+                      <button @click="{ isWhyAppleSwiperModalOpen = false; toggleBodyScrollbar() }"
+                        class="absolute h-9 w-9 rounded-[100vmax] top-4 right-4 bg-[rgb(29,29,31)]">
+                        <svg class="icon_control_plus rotate-45 fill-white" xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 36 36">
+                          <path
+                            d="m24 16.5h-4.5v-4.5c0-.8286-.6719-1.5-1.5-1.5s-1.5.6714-1.5 1.5v4.5h-4.5c-.8281 0-1.5.6714-1.5 1.5s.6719 1.5 1.5 1.5h4.5v4.5c0 .8286.6719 1.5 1.5 1.5s1.5-.6714 1.5-1.5v-4.5h4.5c.8281 0 1.5-.6714 1.5-1.5s-.6719-1.5-1.5-1.5z">
+                          </path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Teleport>
+          </div>
+          <div class="why_apple_swiper__navigation flex justify-end gap-4 pt-12">
+            <div class="w-9 h-9">
+              <button
+                class="prev w-full h-full rounded-[100vmax] focus-visible:outline-[#0066cc] bg-[rgba(210,210,215,0.64)] text-black/50 disabled:opacity-50">
+                <svg class="icon-control icon-control-chevronleft w-full h-full fill-current"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
+                  <path
+                    d="m20 25c-.3838 0-.7676-.1465-1.0605-.4395l-5.5-5.5c-.5859-.5854-.5859-1.5356 0-2.1211l5.5-5.5c.5859-.5859 1.5352-.5859 2.1211 0 .5859.5854.5859 1.5356 0 2.1211l-4.4395 4.4395 4.4395 4.4395c.5859.5854.5859 1.5356 0 2.1211-.293.293-.6768.4395-1.0605.4395z">
+                  </path>
+                </svg>
+              </button>
+            </div>
+            <div class="w-9 h-9">
+              <button
+                class="next w-full h-full rounded-[100vmax] focus-visible:outline-[#0066cc] bg-[rgba(210,210,215,0.64)] text-black/50 disabled:opacity-50">
+                <svg class="icon-control icon-control-chevronright fill-current" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 36 36">
+                  <path
+                    d="m22.5597 16.9375-5.5076-5.5c-.5854-.5854-1.5323-.5825-2.1157.0039-.5835.5869-.5815 1.5366.0039 2.1211l4.4438 4.4375-4.4438 4.4375c-.5854.5845-.5874 1.5342-.0039 2.1211.2922.2944.676.4414 1.0598.4414.3818 0 .7637-.1455 1.0559-.4375l5.5076-5.5c.2815-.2812.4403-.6636.4403-1.0625s-.1588-.7812-.4403-1.0625z">
+                  </path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+  <footer>
+    <div class="container max-w-screen-lg mx-auto px-[22px] text-xs text-[#0000008f]">
+      <div class="footnotes pt-4 pb-3">
+        <ol class="list-decimal px-5 *:pb-[9.6px]">
+          <li>
+            Up to 2x more Active Noise Cancellation compared with AirPods Pro (1st generation) and AirPods 4 with Active
+            Noise Cancellation.
+          </li>
+          <li>
+            Charging requires a compatible USB‑C charger.
+          </li>
+          <li>Compatible hardware and software required. Works with compatible content in supported apps. Not all
+            content
+            available in Dolby Atmos. iPhone with TrueDepth camera required to create a personal profile for Spatial
+            Audio, which will sync across Apple devices running the latest operating system software, including iOS,
+            iPadOS, macOS, and tvOS.</li>
+          <li>
+            Requires an Apple Account and a compatible Apple device running the latest operating system software.
+          </li>
+          <li>
+            Requires a compatible Apple device running the latest operating system software.
+          </li>
+          <li>
+            Siri may not be available in all languages or in all areas, and features may vary by area. Compatible device
+            and internet access required. Cellular data charges may apply.
+          </li>
+          <li>
+            Testing conducted by Apple in July and August 2024 using preproduction AirPods Max paired with preproduction
+            iPhone 16 Pro Max units, all with prerelease software. Testing consisted of full AirPods Max battery
+            discharge
+            while playing one of the following: a music playlist consisting of 358 unique audio tracks purchased from
+            the
+            iTunes Store (256-Kbps AAC encoding), a cellular phone call, or a 2-hour 23-minute movie purchased from the
+            iTunes Store until the AirPods Max stopped playback. Volume was set to 50%, Active Noise Cancellation on,
+            and
+            Spatial Audio set to fixed. For movie playback only, Spatial Audio was set to head tracking. Battery life
+            depends on device settings, environment, usage, and many other factors.
+          </li>
+          <li>
+            Testing conducted by Apple in July and August 2024 using preproduction AirPods Max paired with preproduction
+            iPhone 16 Pro Max units, all with prerelease software. The playlist consisted of 358 unique audio tracks
+            purchased from the iTunes Store (256-Kbps AAC encoding). Volume was set to 50%, Active Noise Cancellation
+            on,
+            and Spatial Audio set to fixed. 5-Minute charge testing conducted with drained AirPods Max that were charged
+            for 5 minutes, then audio playback was started until the AirPods Max stopped playback. Battery life depends
+            on
+            device settings, environment, usage, and many other factors.
+          </li>
+          <li>
+            Battery life depends on device settings, environment, usage, and many other factors.
+          </li>
+          <li>
+            Adaptive Audio is available on compatible devices running iOS 18, iPadOS 18, or macOS Sequoia and later when
+            paired with AirPods 4 with Active Noise Cancellation or AirPods Pro 2 with the latest firmware. Device
+            performance and noise control features like Active Noise Cancellation, Adaptive Audio, and Transparency can
+            be
+            affected by debris or earwax buildup. Clean the device regularly to maintain performance and full feature
+            functionality. Refer to <a href="https://" target="_blank" rel="noopener noreferrer"
+              class="text-[#000000b8] underline">support.apple.com/102672</a> for AirPods 4 cleaning instructions. Refer
+            to
+            <a href="https://" target="_blank" rel="noopener noreferrer"
+              class="text-[#000000b8] underline">support.apple.com/120409</a> for AirPods Pro 2 cleaning instructions.
+          </li>
+          <li>
+            The Hearing Aid feature has received FDA authorization. The Hearing Test and Hearing Aid features are
+            supported on AirPods Pro 2 with the latest firmware paired with a compatible iPhone or iPad with iOS 18 or
+            iPadOS 18 and later and are intended for people 18 years old or older. The Hearing Aid feature is also
+            supported on a compatible Mac with macOS Sequoia and later. It is intended for people with perceived mild to
+            moderate hearing loss.
+          </li>
+          <li>
+            The Hearing Protection feature works with AirPods Pro 2 with the latest firmware when paired with a
+            compatible
+            iPhone, iPad, or Mac with iOS 18, iPadOS 18, or macOS Sequoia and later. Feature is only available in the
+            U.S.
+            and Canada. See <a href="https://" target="_blank" rel="noopener noreferrer"
+              class="text-[#000000b8] underline">support.apple.com/120850</a> for total attenuation and more
+            information. The Hearing Protection
+            feature is not suitable for protection against extremely loud impulse sounds, such as gunfire, fireworks, or
+            jackhammers, or against sustained sounds louder than 110 dBA.
+          </li>
+          <li>
+            Available on compatible devices running iOS 18, iPadOS 18, or macOS Sequoia and later when paired with
+            AirPods
+            4, AirPods 4 with Active Noise Cancellation, or AirPods Pro 2 with the latest firmware.
+          </li>
+          <li>
+            MagSafe charging requires a compatible MagSafe charger. Wireless charging requires a Qi‑certified wireless
+            charger. AirPods Pro 2 charging case also works with the Apple Watch charger or USB‑C connector.
+          </li>
+          <li>
+            Precision Finding requires a U1-equipped iPhone; availability varies by region.
+          </li>
+          <li>
+            AirPods 4, AirPods 4 with Active Noise Cancellation, and AirPods Pro 2 are dust, sweat, and water resistant
+            for non-water sports and exercise. Products including charging case were tested under controlled laboratory
+            conditions, and have a rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are not
+            permanent conditions and resistance might decrease as a result of normal wear. Do not attempt to charge when
+            wet; refer to <a href="https://" target="_blank" rel="noopener noreferrer"
+              class="text-[#000000b8] underline">support.apple.com/kb/HT210711</a> for cleaning and drying
+            instructions.
+          </li>
+        </ol>
+        <p class="pb-[9.6px]">
+          † Apple Card Monthly Installments (ACMI) is a 0% APR payment option that is only available if you select it at
+          checkout in the U.S. for eligible products purchased at Apple Store locations, <a href="https://"
+            target="_blank" rel="noopener noreferrer" class="text-[#000000b8] underline">apple.com</a>, the Apple Store
+          app,
+          or by calling 1‑800‑MY‑APPLE, and is subject to credit approval and credit limit. See <a href="https://"
+            target="_blank" rel="noopener noreferrer" class="text-[#000000b8] underline">support.apple.com/102730</a>
+          for more information about eligible products. Existing customers: See your Customer Agreement for your
+          variable APR. As of December 1, 2024, the variable APR on new Apple Card accounts ranges from 18.49% to
+          28.74%. You must elect to use ACMI at checkout. If you buy an ACMI‑eligible product with a one-time payment on
+          Apple Card at checkout, that purchase is subject to your Apple Card’s variable APR, not the ACMI 0% APR. Taxes
+          and shipping on items purchased using ACMI are subject to your Apple Card’s variable APR, not the ACMI 0% APR.
+          In order to buy an iPhone with ACMI, you must select one of the following carriers: AT&T, Boost Mobile,
+          T‑Mobile, or Verizon. An iPhone purchased with ACMI is always unlocked, so you can switch carriers at any
+          time, subject to your carrier’s terms. ACMI is not available for purchases made online at the following
+          special stores: Apple Employee Purchase Plan; participating corporate Employee Purchase Programs; Apple at
+          Work for small businesses; Government and Veterans and Military Purchase Programs; or on refurbished devices.
+          The last month’s payment for each product will be the product’s purchase price, less all other payments at the
+          monthly payment amount. ACMI is subject to change at any time for any reason, including but not limited to
+          installment term lengths and eligible products. See the <a href="https://" target="_blank"
+            rel="noopener noreferrer" class="text-[#000000b8] underline">Apple Card Customer Agreement</a> for more
+          information
+          about ACMI.</p>
+        <p class="pb-[9.6px]">
+          To access and use all Apple Card features and products available only to Apple Card users, you must add Apple
+          Card to Wallet on an iPhone or iPad that supports and has the latest version of iOS or iPadOS. Apple Card is
+          subject to credit approval, available only for qualifying applicants in the United States, and issued by
+          Goldman Sachs Bank USA, Salt Lake City Branch.</p>
+
+        <p class="pb-[9.6px]">If you reside in the U.S. territories, please call Goldman Sachs at 877-255-5923 with
+          questions about Apple
+          Card.</p>
+      </div>
+      <div class="border-y border-[#00000029] py-5">
+        <div class="grid grid-cols-5 gap-5">
+          <div class="[&>*:not(:first-child)]:pt-6">
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">Shop and Learn</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Store</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Mac</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">iPad</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">iPhone</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Watch</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Vision</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">AirPods</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">TV & Home</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">AirTag</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Accessories</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Gift Cards</a></li>
+              </ul>
+            </div>
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">Apple Wallet</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Wallet</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Card</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Pay</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Cash</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="[&>*:not(:first-child)]:pt-6">
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">Account</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Manage Your Apple Account</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Store Account</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">iCloud.com</a></li>
+              </ul>
+            </div>
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">Entertainment</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple One</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple TV+</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Music</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Arcade</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Fitness+</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple News+</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Podcasts</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Books</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">App Store</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="[&>*:not(:first-child)]:pt-6">
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">Apple Store</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Find a Store</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Genius Bar</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Today at Apple</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Group Reservations</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Camp</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Store App</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Certified Refurbished</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple Trade In</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Financing</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Carrier Deals at Apple</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Order Status</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Shopping Help</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="[&>*:not(:first-child)]:pt-6">
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">For Business</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Apple and Business</a></li>
+                <li><a href="https://" target="_blank" rel="noopener noreferrer">Shop for Business</a></li>
+              </ul>
+            </div>
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">For Education</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Apple and Education</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Shop for K-12</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Shop for College</a></li>
+              </ul>
+            </div>
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">For Healthcare</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Apple in Healthcare</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Mac in Healthcare</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Health on Apple Watch</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Health Records on iPhone and iPad</a>
+                </li>
+              </ul>
+            </div>
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">For Government</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Shop for Government</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Shop for Veterans and Military</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="[&>*:not(:first-child)]:pt-6">
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">Apple Values</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Accessibility</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Education</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Entertainment</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Inclusion and Diversity</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Racial Equity and Justice</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Supply Chain</a></li>
+              </ul>
+            </div>
+            <div class="">
+              <h3 class="text-[#000000e0] font-semibold mb-2">About Apple</h3>
+              <ul
+                class="[&>*:not(:last-child)]:mb-2 text-[#000000b8] [&>*>a:hover]:underline [&>*>a:focus-visible]:underline">
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Newsroom</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Apple Leadership</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Career Oppurtunities</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Investors</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Ethics & Compliance</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Events</a></li>
+                <li><a href="http://" target="_blank" rel="noopener noreferrer">Contact Apple</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="pt-9">
+          <p>More ways to shop: <a href="" class="underline text-[#0066cc]">Find an Apple Store</a> or <a href=""
+              class="underline text-[#0066cc]">other retailer</a> near you. Or call <a href=""
+              class="underline text-[#0066cc]">1-800-MY-APPLE</a>.</p>
+        </div>
+      </div>
+      <div class="flex justify-between py-4">
+        <span class="text-[#0000008f]">Copyright &copy; 2024 Apple Inc. All rights reserved.</span>
+        <span class="text-[#000000b8]">India</span>
+      </div>
+    </div>
+  </footer>
 </template>
 <style>
 .highlights_swiper__pagination {
