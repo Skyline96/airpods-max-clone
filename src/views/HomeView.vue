@@ -31,14 +31,15 @@ const highlightsSwiperParams = {
 }
 
 const toggleSliderAutoplay = () => {
-  if (!highlightsSwiperEl.value.swiper.autoplay.running) {
-    if (highlightsSwiperEl.value.swiper.isEnd) {
-      highlightsSwiperEl.value.swiper.slideTo(0, 1500, false);
+  const swiper = highlightsSwiperEl.value.swiper;
+  if (!swiper.autoplay.running) {
+    if (swiper.isEnd) {
+      swiper.slideTo(0, 1500, false);
     }
-    highlightsSwiperEl.value.swiper.autoplay.start();
+    swiper.autoplay.start();
     highlightsSwiperProps.isAutoplayRunning = true;
   } else {
-    highlightsSwiperEl.value.swiper.autoplay.stop();
+    swiper.autoplay.stop();
     highlightsSwiperProps.isAutoplayRunning = false;
   }
 }
@@ -90,9 +91,7 @@ const availableColorVariants = [
   { colorName: 'orange', colorShadeLight: '#e2a48d', colorShadeDark: '#ffc09d' }
 ];
 
-const isColorVariantActive = (color) => {
-  return colorVariant.value == color;
-}
+const isColorVariantActive = (color) => colorVariant.value === color;
 
 const initColorsSwiper = () => {
   new Swiper(colorsSwiperEl.value, colorsSwiperParams);
@@ -145,18 +144,15 @@ const setActiveTab = (index) => {
 };
 
 // Check if tab is active
-const isTabActive = (index) => {
-  return activeTabIndex.value === index;
-};
+const isTabActive = (index) => activeTabIndex.value === index;
 
 
 const isProductDesignModalOpen = ref(false)
 
 // Hide body scrollbar if modal is open
 const toggleBodyScrollbar = () => {
-  isHifiSoundModalOpen.value || isProductDesignModalOpen.value || isWhyAppleSwiperModalOpen.value ?
-    document.body.style.overflow = 'hidden' :
-    document.body.style.overflow = 'auto';
+  const isModalOpen = isHifiSoundModalOpen.value || isProductDesignModalOpen.value || isWhyAppleSwiperModalOpen.value;
+  document.body.style.overflow = isModalOpen ? 'hidden' : 'auto';
 }
 
 const batteryDetailsSwiperEl = useTemplateRef('battery_details_swiper');
