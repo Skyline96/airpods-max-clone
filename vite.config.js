@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
     ],
-    base: mode === 'production' ? '/your-repo-name/' : '/',
+    base: mode === 'production' ? '/airpods-max-clone/' : '/',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
