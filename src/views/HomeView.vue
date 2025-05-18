@@ -5,6 +5,8 @@ import { Pagination, Keyboard, Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 const highlightsSwiperEl = useTemplateRef('highlights_swiper');
 const highlightsSwiperProps = reactive({
   isAutoplayRunning: true,
@@ -104,19 +106,19 @@ const hifiDetailsTabs = [
     id: 'microphones',
     title: 'Microphones',
     description: 'To cancel unwanted external noise, AirPods Max use six outward-facing microphones to detect noise in your environment, and two inward-facing microphones to measure what you’re hearing. Beamforming microphones help isolate your voice on phone calls, so it’s heard clearly — even in windy situations.',
-    imgSrc: '/images/hifi-sound/modal/audio_bc_microphone_large.png'
+    imgSrc: `${baseUrl}images/hifi-sound/modal/audio_bc_microphone_large.png`
   },
   {
     id: 'driver',
     title: 'Driver',
     description: 'The Apple-designed dynamic driver produces an extended frequency range that uncovers the rich details of every sound — delivering your favorite songs with previously unheard texture and accuracy.',
-    imgSrc: '/images/hifi-sound/modal/audio_bc_driver_large.png'
+    imgSrc: `${baseUrl}images/hifi-sound/modal/audio_bc_driver_large.png`
   },
   {
     id: 'playback',
     title: 'Distortionless Playback',
     description: 'Modeled after those in high-end floor-standing speakers, the driver’s dual-neodymium ring magnet motor minimizes total harmonic distortion across the entire audible range. The result is consistently clear playback, even at full volume.',
-    imgSrc: '/images/hifi-sound/modal/audio_bc_distortionless_playback_large.png'
+    imgSrc: `${baseUrl}images/hifi-sound/modal/audio_bc_distortionless_playback_large.png`
   }
 ];
 const hifiDetailsTabRefs = useTemplateRef('hifi_details_tabs');
@@ -209,7 +211,7 @@ const whyAppleSwiperParams = {
 const whyAppleSwiperSlides = [
   {
     id: 1,
-    icon: '/images/why-apple/icon_emoji_face_grinning_large.png',
+    icon: `${baseUrl}images/why-apple/icon_emoji_face_grinning_large.png`,
     title: 'Personalize your AirPods for free.',
     description: 'Engrave your AirPods with your initials or favorite emoji — free. Only at Apple.',
     modalContent: {
@@ -222,7 +224,7 @@ const whyAppleSwiperSlides = [
   },
   {
     id: 2,
-    icon: '/images/why-apple/icon_truck_box_large.png',
+    icon: `${baseUrl}images/why-apple/icon_truck_box_large.png`,
     title: 'Get flexible delivery and easy&nbsp;pickup.',
     description: 'Choose 2‑hour delivery from an Apple&nbsp;Store, free delivery, or easy pickup&nbsp;options.',
     modalContent: {
@@ -235,7 +237,7 @@ const whyAppleSwiperSlides = [
   },
   {
     id: 3,
-    icon: '/images/why-apple/icon_applecard_large.png',
+    icon: `${baseUrl}images/why-apple/icon_applecard_large.png`,
     title: 'Pay over time, interest‑free.',
     description: 'When you choose to check out with Apple&nbsp;Card Monthly Installments.',
     modalContent: {
@@ -248,7 +250,7 @@ const whyAppleSwiperSlides = [
   },
   {
     id: 4,
-    icon: '/images/why-apple/icon_message_and_message_large.png',
+    icon: `${baseUrl}images/why-apple/icon_message_and_message_large.png`,
     title: 'Shop live with a&nbsp;Specialist.',
     description: 'Let us guide you live over video and answer all of your questions.',
     modalContent: {
@@ -261,7 +263,7 @@ const whyAppleSwiperSlides = [
   },
   {
     id: 5,
-    icon: '/images/why-apple/icon_app_applestore_large.png',
+    icon: `${baseUrl}images/why-apple/icon_app_applestore_large.png`,
     title: 'Explore a shopping experience designed around you.',
     description: 'Use the Apple Store app to get a more personal way to shop.',
     modalContent: {
@@ -269,7 +271,7 @@ const whyAppleSwiperSlides = [
       headline: 'Shop in the Apple Store app, tailored specifically for you.',
       summary: 'Get personalized product recommendations, compare models, access your Saved Items, and track your orders. Plus, opt in today to get updates on new products, promotions, flexible payment options, and store events.',
       extra: 'Scan the QR code to get started.',
-      extraImage: '/images/why-apple/boc_qr_code_large.jpg',
+      extraImage: `${baseUrl}images/why-apple/boc_qr_code_large.jpg`,
       linkText: '',
       link: ''
     }
@@ -452,8 +454,8 @@ onMounted(() => {
           <div class="absolute inset-0">
             <picture>
               <source media="(max-width: 480px)"
-                :srcset="`/images/colors/bento_1_airpod_max_${colorVariant}_xsmall.jpg 2x`">
-              <img :src="`/images/colors/bento_1_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                :srcset="`${baseUrl}images/colors/bento_1_airpod_max_${colorVariant}_xsmall.jpg 2x`">
+              <img :src="`${baseUrl}images/colors/bento_1_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
                 class="h-full object-cover">
             </picture>
           </div>
@@ -463,16 +465,16 @@ onMounted(() => {
             <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
               <picture>
                 <source media="(max-width: 480px)"
-                  :srcset="`/images/colors/bento_2_airpod_max_${colorVariant}_xsmall.jpg 2x`">
-                <img :src="`/images/colors/bento_2_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  :srcset="`${baseUrl}images/colors/bento_2_airpod_max_${colorVariant}_xsmall.jpg 2x`">
+                <img :src="`${baseUrl}images/colors/bento_2_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
                   class="h-full object-cover">
               </picture>
             </div>
             <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
               <picture>
                 <source media="(max-width: 480px)"
-                  :srcset="`/images/colors/bento_3_airpod_max_${colorVariant}_xsmall.jpg 2x`">
-                <img :src="`/images/colors/bento_3_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  :srcset="`${baseUrl}images/colors/bento_3_airpod_max_${colorVariant}_xsmall.jpg 2x`">
+                <img :src="`${baseUrl}images/colors/bento_3_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
                   class="h-full object-cover">
               </picture>
             </div>
@@ -483,16 +485,16 @@ onMounted(() => {
             <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
               <picture>
                 <source media="(max-width: 480px)"
-                  :srcset="`/images/colors/bento_4_airpod_max_${colorVariant}_xsmall.jpg 2x`">
-                <img :src="`/images/colors/bento_4_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  :srcset="`${baseUrl}images/colors/bento_4_airpod_max_${colorVariant}_xsmall.jpg 2x`">
+                <img :src="`${baseUrl}images/colors/bento_4_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
                   class="h-full object-cover">
               </picture>
             </div>
             <div class="relative h-full rounded-[28px] bg-[rgb(232,232,237)] overflow-clip">
               <picture>
                 <source media="(max-width: 480px)"
-                  :srcset="`/images/colors/bento_5_airpod_max_${colorVariant}_xsmall.jpg 2x`">
-                <img :src="`/images/colors/bento_5_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
+                  :srcset="`${baseUrl}images/colors/bento_5_airpod_max_${colorVariant}_xsmall.jpg 2x`">
+                <img :src="`${baseUrl}images/colors/bento_5_airpod_max_${colorVariant}_xlarge.jpg`" alt=""
                   class="h-full object-cover">
               </picture>
             </div>
