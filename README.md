@@ -1,6 +1,12 @@
-# airpods-max-clone
+# AirPods Max UI Clone
 
-This template should help get you started developing with Vue 3 in Vite.
+A visually stunning and responsive recreation of the Apple AirPods Max user interface, built using Vue 3 and Vite.
+
+## Tech Stack
+
+- **Framework:** Vue 3
+- **Build Tool:** Vite
+- **Language:** JavaScript
 
 ## Recommended IDE Setup
 
