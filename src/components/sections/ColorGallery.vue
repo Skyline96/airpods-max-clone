@@ -85,31 +85,32 @@
         </div>
       </div>
     </div>
-    <div class="sticky bottom-8 inset-x-0 max-w-max mx-auto mt-8 text-center h-14 z-10">
-      <div class="h-full bg-[rgba(232,232,237,0.7)] backdrop-blur-lg rounded-[100vmax] overflow-hidden">
-        <ul class="list-none color_swatches h-full inline-flex items-center mx-2">
-          <li v-for="color in availableColorVariants" :key="color.colorName" class="w-7 h-7 mx-2">
-            <input type="radio" name="color_swatch" v-model="colorVariant" :value="color.colorName"
-              class="appearance-none relative h-full w-full rounded-[100vmax] focus:outline focus:outline-2 focus:outline-offset-4 focus:outline-black/60 after:content-[''] after:absolute after:-inset-[1px] after:rounded-[inherit] after:bg-gradient-to-b after:from-black/60 after:to-55% after:-z-10"
-              :class="isColorVariantActive(color.colorName) ? 'outline outline-2 outline-offset-4 outline-black/60' : ''"
-              :style="`background:linear-gradient(0deg, ${color.colorShadeLight} 50%, ${color.colorShadeDark} 0);`" />
-          </li>
-        </ul>
-      </div>
-    </div>
+
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted, useTemplateRef } from 'vue'
+import { onMounted, useTemplateRef, computed } from 'vue'
 import Swiper from 'swiper'
 import { Keyboard, Navigation } from 'swiper/modules'
 import 'swiper/css'
-import { colorVariants } from '@/data/airpodsData'
+
 
 const baseUrl = import.meta.env.BASE_URL
 const colorsSwiperEl = useTemplateRef('colors_swiper')
-const colorVariant = ref('midnight')
+const props = defineProps({
+  colorVariant: {
+    type: String,
+    default: 'midnight'
+  }
+})
+
+const emit = defineEmits(['update:colorVariant'])
+
+const colorVariant = computed({
+  get: () => props.colorVariant,
+  set: (value) => emit('update:colorVariant', value)
+})
 
 const colorsSwiperParams = {
   modules: [Keyboard, Navigation],
@@ -126,17 +127,16 @@ const colorsSwiperParams = {
   }
 }
 
-const availableColorVariants = colorVariants
-
-const isColorVariantActive = (color) => {
-  return colorVariant.value == color
-}
-
 const initColorsSwiper = () => {
   new Swiper(colorsSwiperEl.value, colorsSwiperParams)
 }
 
 onMounted(() => {
   initColorsSwiper()
+})
+
+// Expose color state for parent components
+defineExpose({
+  colorVariant
 })
 </script> 

@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => {
           manualChunks: {
             'swiper': ['swiper'],
             'vue-vendor': ['vue', 'vue-router'],
+            'gsap': ['gsap'],
           }
         }
       },
@@ -41,7 +42,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: mode === 'development',
     },
     optimizeDeps: {
-      include: ['swiper', 'swiper/modules']
+      include: ['swiper', 'swiper/modules', 'gsap']
     },
     server: {
       port: 3000,

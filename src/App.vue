@@ -1,6 +1,6 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import GlobalNavBar from './components/GlobalNavBar.vue';
+import { RouterView } from 'vue-router'
+import GlobalNavBar from './components/layout/GlobalNavBar.vue';
 </script>
 
 <template>

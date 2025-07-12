@@ -129,7 +129,7 @@ const whyAppleSwiperActiveSlideId = ref(0);
 const whyAppleSwiperActiveSlideIndex = ref(0);
 
 import { useModal } from '@/composables/useModal'
-import CloseButton from '@/components/CloseButton.vue'
+import CloseButton from '@/components/ui/CloseButton.vue'
 
 const { isModalOpen: isWhyAppleSwiperModalOpen, openModal, closeModal } = useModal()
 
