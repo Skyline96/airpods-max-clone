@@ -9,19 +9,19 @@
     <div
       class="flex flex-col justify-between items-center w-[87.5%] max-w-[1680px] sm:min-h-[2280px] mx-auto text-white">
       <div class="mt-24 sm:mt-40 mb-10 text-center">
-        <h2
+        <h2 ref="heading"
           class="text-[40px] sm:text-[110px] leading-tight sm:leading-[1.15] sm:tracking-[-3px] text-balance font-semibold">
           All the vivid details.</h2>
-        <p
+        <p ref="subheading"
           class="text-[21px] sm:text-[28px] leading-tight sm:leading-[1.15] text-balance font-semibold mt-[30px] sm:mt-10">
           AirPods Max deliver stunningly
           detailed, high-fidelity audio for an unparalleled listening experience. Each
           part of the custom-built driver works to produce sound with ultra-low distortion across the audible range —
           so you'll hear every note with a new sense of clarity.</p>
       </div>
-      <div class="grid sm:grid-cols-2 gap-8 sm:gap-24 mt-[450px] sm:mt-0">
+      <div ref="gridContainer" class="grid sm:grid-cols-3 gap-8 sm:gap-16 mb-[194px] xl:mb-72 sm:mt-0">
         <div class="">
-          <div class="h-11 sm:h-[60px] mb-3 sm:mb-[18px]">
+          <div class="h-11 sm:h-[60px] flex items-center mb-3 sm:mb-[18px]">
             <svg class="hifi_sound_detail_icon_spatial_audio max-h-full fill-current" xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24.44 26.77">
               <path class="cls-1"
@@ -37,7 +37,7 @@
             to your device.</p>
         </div>
         <div class="">
-          <div class="h-11 sm:h-[60px] mb-3 sm:mb-[18px]">
+          <div class="h-11 sm:h-[60px] flex items-center mb-3 sm:mb-[18px]">
             <svg class="hifi_sound_detail_icon_adaptive_eq max-h-full fill-current" xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 21.1 25.1">
               <path class="cls-1"
@@ -51,14 +51,91 @@
             microphones measure what you're hearing, then adjust the frequencies of your music to deliver a rich,
             consistent experience that faithfully reproduces every note.</p>
         </div>
+        <div class="">
+          <div class="h-11 sm:h-[60px] flex items-center max-w-12 sm:max-w-[64px] mb-3 sm:mb-[18px]">
+            <svg class="hifi-sound-detail-icon-lossless-audio max-h-full fill-current"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0.5 27.28 97 51.33">
+              <path
+                d="m44.4949 78.6097c3.174 0 5.5032-1.5604 7.3034-3.4843l-2.2234-3.2231c-1.2034 1.2034-2.5199 1.8657-3.9139 1.8657-10.1436 0-11.6476-46.4883-29.1627-46.4883-10.0389 0-14.5364 14.9005-15.9701 28.6264-.1776 1.5408.4919 2.3796 1.8013 2.3796 1.011 0 1.6077-.5807 1.7314-1.745.9365-8.6436 4.2786-24.3414 10.9048-24.3414 3.7144 0 5.8514 4.3295 7.1027 8.8099-1.2217 3.9773-2.2766 8.3447-2.9815 14.8968-.1587 1.5408.4866 2.3796 1.8012 2.3796 1.0217 0 1.6131-.5807 1.761-1.745.2558-2.4584.9507-7.117 1.6321-9.477 3.7263 12.3941 9.1326 31.5459 20.2138 31.5459zm18.6017 0c2.7994 0 5.2015-1.2585 6.9773-3.1391l-2.334-3.1693c-.9121.8044-2.102 1.4667-3.4717 1.4667-10.0169 0-11.5992-46.4883-29.1627-46.4883-3.344 0-5.7757 1.5604-7.5758 3.4842l2.272 3.3202c1.2465-1.2224 2.5145-1.8848 3.9086-1.8848 9.7345 0 11.743 46.4103 29.3863 46.4103zm18.3888 0c10.0145 0 14.5364-14.9005 15.9997-28.6265.1236-1.5408-.5214-2.3743-1.8551-2.3743-.9868 0-1.5834.5754-1.7315 1.764-.9068 8.6246-4.2437 24.2929-10.8806 24.2929-3.7143 0-5.8756-4.3053-7.0974-8.8099 1.2165-3.953 2.2525-8.3203 2.9817-14.8727.1291-1.5408-.4919-2.3743-1.8066-2.3743-1.0406 0-1.6372.5754-1.761 1.764-.2799 2.4342-.9506 7.0685-1.6562 9.4528-3.7021-12.3941-9.1083-31.5459-20.1895-31.5459-3.174 0-5.5032 1.5604-7.2791 3.5084l2.2044 3.2231c1.1981-1.2277 2.5146-1.8901 3.9086-1.8901 10.1435 0 11.6529 46.4884 29.1627 46.4884z">
+              </path>
+            </svg>
+          </div>
+          <p class="text-[17px] sm:text-[21px] font-semibold leading-tight tracking-tight text-[#808488]"><span
+              class="text-white">Lossless Audio</span> preserves every detail of the original recording, whether you’re
+            enjoying a movie or music. Simply connect AirPods Max to your device by USB‑C to enable Lossless Audio
+            content. If you create your own audio in apps like Logic Pro and GarageBand, you’ll also get ultra-low
+            latency on par with the built-in speakers on Mac, iPad, and iPhone.</p>
+        </div>
       </div>
     </div>
 
   </section>
-
-
 </template>
 
 <script setup>
-// HifiSoundSection component - modal functionality moved to HifiSoundControls component
-</script> 
+import { onMounted, useTemplateRef } from 'vue'
+import { gsap, ScrollTrigger } from 'gsap/all'
+
+const headingRef = useTemplateRef('heading')
+const subheadingRef = useTemplateRef('subheading')
+const gridContainerRef = useTemplateRef('gridContainer')
+
+const initAnimations = () => {
+  // Register ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger)
+  
+  // Set initial states - ensure elements start hidden
+  gsap.set(headingRef.value, { opacity: 0, y: 30 })
+  gsap.set(subheadingRef.value, { opacity: 0, y: 30 })
+  gsap.set(gridContainerRef.value.children, { opacity: 0, y: 30 })
+
+  // Create timeline for heading and subheading animations
+  const headingTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: headingRef.value,
+      start: 'top 80%', // Start when 20% of heading is in view
+      end: 'bottom 20%',
+      toggleActions: 'play none none none', // Play once, no reverse
+    }
+  })
+
+  // Animate heading first
+  headingTl.to(headingRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  })
+
+  // Animate subheading
+  headingTl.to(subheadingRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  }, '-=0.4') // Start subheading animation before heading finishes
+
+  // Create separate timeline for grid items
+  const gridTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: gridContainerRef.value,
+      start: 'top 50%', // Start when 20% of grid container is in view
+      end: 'bottom 20%',
+      toggleActions: 'play none none none', // Play once, no reverse
+    }
+  })
+
+  // Stagger animate grid children
+  gridTl.to(gridContainerRef.value.children, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: 'power2.out'
+  })
+}
+
+onMounted(() => {
+  initAnimations()
+})
+</script>

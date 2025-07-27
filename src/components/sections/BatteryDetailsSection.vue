@@ -3,6 +3,7 @@
         <div class="section_header">
             <div class="w-[87.5%] max-w-[1680px] mx-auto text-center mb-10 sm:mb-20">
                 <h2
+                    ref="heading"
                     class="product_desc text-[40px] sm:text-[80px] leading-tight sm:leading-[1.15] tracking-[-1px] sm:tracking-[-3px] font-semibold">
                     Effortless.<br />
                     With encore-ready power.</h2>
@@ -119,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="battery_details_swiper__navigation flex justify-end gap-4 pt-10 sm:pt-12 pb-20">
+                <div ref="navigation" class="battery_details_swiper__navigation flex justify-end gap-4 pt-10 sm:pt-12 pb-20">
                     <div class="w-9 h-9">
                         <button
                             class="prev w-full h-full rounded-[100vmax] bg-[rgba(210,210,215,0.64)] text-black/50 disabled:opacity-50">
@@ -149,10 +150,13 @@
 </template>
 <script setup>
 import { onMounted, useTemplateRef } from 'vue';
+import { gsap, ScrollTrigger } from 'gsap/all';
 import { Keyboard, Navigation } from 'swiper/modules';
 import Swiper from 'swiper';
 
+const headingRef = useTemplateRef('heading');
 const batteryDetailsSwiperEl = useTemplateRef('battery_details_swiper');
+const navigationRef = useTemplateRef('navigation');
 
 const batteryDetailsSwiperParams = {
     modules: [Keyboard, Navigation],
@@ -170,11 +174,70 @@ const batteryDetailsSwiperParams = {
     }
 }
 
+const initAnimations = () => {
+    // Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger)
+    
+    // Get all slides dynamically
+    const slides = batteryDetailsSwiperEl.value.querySelectorAll('.swiper-slide')
+    
+    // Set initial states - ensure elements start hidden
+    gsap.set(headingRef.value, { opacity: 0, y: 30 })
+    gsap.set(slides, { opacity: 0, y: 30 })
+    gsap.set(navigationRef.value, { opacity: 0, y: 30 })
+
+    // Create timeline for heading animation
+    const headingTl = gsap.timeline({
+        scrollTrigger: {
+            trigger: headingRef.value,
+            start: 'top 80%', // Start when 20% of heading is in view
+            end: 'bottom 50%',
+            toggleActions: 'play none none none', // Play once, no reverse
+        }
+    })
+
+    // Animate heading
+    headingTl.to(headingRef.value, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out'
+    })
+
+    // Create separate timeline for slides animation
+    const slidesTl = gsap.timeline({
+        scrollTrigger: {
+            trigger: batteryDetailsSwiperEl.value,
+            start: 'top 80%', // Start when 20% of swiper is in view
+            end: 'bottom 20%',
+            toggleActions: 'play none none none', // Play once, no reverse
+        }
+    })
+
+    // Stagger animate slides
+    slidesTl.to(slides, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        stagger: 0.15,
+        ease: 'power2.out'
+    })
+
+    // Animate navigation
+    slidesTl.to(navigationRef.value, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out'
+    }, '-=0.3') // Start navigation animation before slides finish
+}
+
 const initBatteryDetailsSwiper = () => {
     new Swiper(batteryDetailsSwiperEl.value, batteryDetailsSwiperParams);
 }
 
 onMounted(() => {
     initBatteryDetailsSwiper();
+    initAnimations();
 })
 </script>

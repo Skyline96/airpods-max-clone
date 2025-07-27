@@ -2,12 +2,12 @@
     <section class="why_apple overflow-x-clip bg-[rgb(245,245,247)] py-24 sm:py-40">
         <div class="section_header">
             <div class="w-[87.5%] max-w-[1680px] mx-auto">
-                <h2 class="text-[28px] sm:text-[56px] leading-[1.15] tracking-tight font-semibold pb-12 sm:pb-20">Why
+                <h2 ref="heading" class="text-[28px] sm:text-[56px] leading-[1.15] tracking-tight font-semibold pb-12 sm:pb-20">Why
                     Apple is
                     the
                     best<br> place to buy AirPods.</h2>
             </div>
-            <div ref="why_apple_swiper"
+            <div ref="whyAppleSwiperContainer"
                 class="why_apple_swiper px-[max(6.25vw,(100vw-1680px)/2,env(safe-area-inset-left),env(safe-area-inset-right))]">
                 <div class="swiper-wrapper">
                     <div v-for="(whyAppleSwiperSlide, index) in whyAppleSwiperSlides" :key="whyAppleSwiperSlide.id"
@@ -121,12 +121,16 @@
 import { onMounted, ref, useTemplateRef } from 'vue';
 import { Keyboard, Navigation } from 'swiper/modules';
 import Swiper from 'swiper';
+import { gsap, ScrollTrigger } from 'gsap/all';
 
 const baseUrl = import.meta.env.BASE_URL;
 
-const whyAppleSwiperEl = useTemplateRef('why_apple_swiper');
+const whyAppleSwiperEl = useTemplateRef('whyAppleSwiperContainer');
 const whyAppleSwiperActiveSlideId = ref(0);
 const whyAppleSwiperActiveSlideIndex = ref(0);
+
+// Animation refs
+const headingRef = useTemplateRef('heading');
 
 import { useModal } from '@/composables/useModal'
 import CloseButton from '@/components/ui/CloseButton.vue'
@@ -138,6 +142,66 @@ const setWhyAppleSwiperActiveSlide = (id, index) => {
     whyAppleSwiperActiveSlideIndex.value = index;
     openModal();
 };
+
+const initAnimations = () => {
+  // Register ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger)
+  
+  // Set initial states - ensure elements start hidden
+  gsap.set(headingRef.value, { opacity: 0, y: 30 })
+  
+  // Get swiper slides and navigation elements
+  const swiperSlides = whyAppleSwiperEl.value.querySelectorAll('.swiper-slide')
+  const navigationElements = whyAppleSwiperEl.value.querySelectorAll('.why_apple_swiper__navigation')
+  
+  gsap.set(swiperSlides, { opacity: 0, y: 30 })
+  gsap.set(navigationElements, { opacity: 0, y: 30 })
+
+  // Create timeline for heading animation
+  const headingTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: headingRef.value,
+      start: 'top 80%', // Start when 20% of heading is in view
+      end: 'bottom 50%',
+      toggleActions: 'play none none none', // Play once, no reverse
+    }
+  })
+
+  // Animate heading
+  headingTl.to(headingRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  })
+
+  // Create separate timeline for swiper animation
+  const swiperTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: whyAppleSwiperEl.value,
+      start: 'top 70%', // Start when 30% of swiper is in view
+      end: 'bottom 20%',
+      toggleActions: 'play none none none', // Play once, no reverse
+    }
+  })
+
+  // Animate swiper slides with stagger
+  swiperTl.to(swiperSlides, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: 'power2.out'
+  })
+
+  // Animate navigation elements
+  swiperTl.to(navigationElements, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    ease: 'power2.out'
+  }, '-=0.3') // Start navigation animation slightly before slides finish
+}
 
 const whyAppleSwiperParams = {
     modules: [Keyboard, Navigation],
@@ -231,5 +295,6 @@ const initWhyAppleSwiper = () => {
 
 onMounted(() => {
     initWhyAppleSwiper();
+    initAnimations();
 })
 </script>

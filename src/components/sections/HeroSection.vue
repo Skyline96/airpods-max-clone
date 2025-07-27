@@ -1,7 +1,7 @@
 <template>
-  <section class="hero relative">
+  <section ref="heroSection" class="hero relative opacity-0">
     <div class="video_wrapper h-screen sm:h-[103vh]">
-      <video loop muted autoplay class="w-full h-full object-cover">
+      <video ref="heroVideo" loop muted autoplay class="w-full h-full object-cover">
         <source src="/videos/xsmall_2x.mp4" media="(max-width: 480px)">
         <source src="/videos/hero.mp4" media="(min-width: 1441px)">
       </video>
@@ -32,7 +32,62 @@
     </div>
   </section>
 </template>
-
 <script setup>
-// Component logic can be added here if needed
-</script> 
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const heroSection = ref(null)
+const heroVideo = ref(null)
+let scrollTriggerInstance = null
+
+onMounted(async () => {
+  await nextTick()
+  if (heroSection.value) {
+    gsap.to(heroSection.value, {
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power1.out',
+      delay: 0.3
+    })
+  }
+
+  scrollTriggerInstance = ScrollTrigger.create({
+    trigger: heroSection.value,
+    start: 'top 80%',
+    end: 'bottom 20%',
+    onEnter: () => {
+      if (heroVideo.value) {
+        heroVideo.value.play()
+        heroVideo.value.loop = true
+      }
+    },
+    onLeave: () => {
+      if (heroVideo.value) {
+        heroVideo.value.pause()
+        heroVideo.value.loop = false
+      }
+    },
+    onEnterBack: () => {
+      if (heroVideo.value) {
+        heroVideo.value.play()
+        heroVideo.value.loop = true
+      }
+    },
+    onLeaveBack: () => {
+      if (heroVideo.value) {
+        heroVideo.value.pause()
+        heroVideo.value.loop = false
+      }
+    },
+  })
+})
+
+onBeforeUnmount(() => {
+  if (scrollTriggerInstance) {
+    scrollTriggerInstance.kill()
+  }
+})
+</script>

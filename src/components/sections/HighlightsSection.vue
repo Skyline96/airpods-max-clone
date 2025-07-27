@@ -1,11 +1,11 @@
 <template>
   <section class="highlights relative py-24 sm:py-40 overflow-x-clip">
     <div class="w-[87.5%] max-w-[1680px] mx-auto">
-      <h2
+      <h2 ref="heading"
         class="text-[28px] sm:text-[56px] tracking-tight sm:leading-none sm:tracking-tighter font-semibold pb-12 sm:pb-20">
         Get the highlights.</h2>
     </div>
-    <div ref="highlights_swiper"
+    <div ref="highlightsSwiper"
       class="highlights_swiper px-[max(6.25vw,(100vw-1680px)/2,env(safe-area-inset-left),env(safe-area-inset-right))]">
       <div class="swiper-wrapper">
         <div
@@ -92,14 +92,17 @@
 
 <script setup>
 import { onMounted, reactive, useTemplateRef } from 'vue'
+import { gsap, ScrollTrigger } from 'gsap/all'
 import Swiper from 'swiper'
 import { Pagination, Keyboard, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-const highlightsSwiperEl = useTemplateRef('highlights_swiper')
+const headingRef = useTemplateRef('heading')
+
+const highlightsSwiperEl = useTemplateRef('highlightsSwiper')
 const highlightsSwiperProps = reactive({
-  isAutoplayRunning: true,
+  isAutoplayRunning: false, // Start with autoplay disabled
   isAutoplayEnded: false
 })
 
@@ -146,15 +149,9 @@ const initHighlightsSwiper = () => {
     if (!highlightsSwiper.isEnd) {
       highlightsSwiperProps.isAutoplayEnded = false
     }
-    
+
     // Update active bullet in HighlightsControls
-    const highlightsControlsPagination = document.querySelector('.swiper-controls__pagination')
-    if (highlightsControlsPagination) {
-      const bullets = highlightsControlsPagination.querySelectorAll('.swiper-pagination-bullet')
-      bullets.forEach((bullet, index) => {
-        bullet.classList.toggle('swiper-pagination-bullet-active', index === highlightsSwiper.activeIndex)
-      })
-    }
+    updatePaginationBullets()
   })
 
   highlightsSwiper.on('reachEnd', () => {
@@ -167,6 +164,19 @@ const initHighlightsSwiper = () => {
   })
 }
 
+const updatePaginationBullets = () => {
+  const highlightsControlsPagination = document.querySelector('.swiper-controls__pagination')
+
+  if (highlightsControlsPagination && highlightsSwiper) {
+    const bullets = highlightsControlsPagination.querySelectorAll('.swiper-pagination-bullet')
+
+    bullets.forEach((bullet, index) => {
+      const isActive = index === highlightsSwiper.activeIndex
+      bullet.classList.toggle('swiper-pagination-bullet-active', isActive)
+    })
+  }
+}
+
 const updatePaginationElement = (element) => {
   if (highlightsSwiper && element) {
     // Move pagination bullets from hidden element to HighlightsControls
@@ -177,7 +187,7 @@ const updatePaginationElement = (element) => {
       bullets.forEach(bullet => {
         element.appendChild(bullet.cloneNode(true))
       })
-      
+
       // Add click event listeners to new bullets
       const newBullets = element.querySelectorAll('.swiper-pagination-bullet')
       newBullets.forEach((bullet, index) => {
@@ -189,8 +199,79 @@ const updatePaginationElement = (element) => {
   }
 }
 
-onMounted(() => {
+const initAnimations = () => {
+  // Register ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger)
+
+  // Get all slides dynamically
+  const slides = highlightsSwiperEl.value.querySelectorAll('.swiper-slide')
+
+  // Set initial states - ensure elements start hidden
+  gsap.set(headingRef.value, { opacity: 0, y: 30 })
+  gsap.set(slides, { opacity: 0, y: 30 })
+
+  // Create timeline for staggered animations
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: headingRef.value,
+      start: 'top 80%', // Start when 20% of heading is in view
+      end: 'bottom 20%',
+      toggleActions: 'play none none none', // Play once, no reverse
+    }
+  })
+
+  // Animate heading first
+  tl.to(headingRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  })
+
+  // Stagger animate slides
+  tl.to(slides, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: 'power2.out'
+  }, '-=0.4') // Start slides animation before heading finishes
+
+  // Create scroll trigger for swiper autoplay
+  ScrollTrigger.create({
+    trigger: highlightsSwiperEl.value,
+    start: 'top 50%', // When 50% of swiper is in view
+    end: 'bottom 50%',
+    onEnter: () => {
+      if (highlightsSwiper && !highlightsSwiper.autoplay.running) {
+        highlightsSwiper.autoplay.start()
+        highlightsSwiperProps.isAutoplayRunning = true
+      }
+    },
+    onLeave: () => {
+      if (highlightsSwiper && highlightsSwiper.autoplay.running) {
+        highlightsSwiper.autoplay.stop()
+        highlightsSwiperProps.isAutoplayRunning = false
+      }
+    },
+    onEnterBack: () => {
+      if (highlightsSwiper && !highlightsSwiper.autoplay.running) {
+        highlightsSwiper.autoplay.start()
+        highlightsSwiperProps.isAutoplayRunning = true
+      }
+    },
+    onLeaveBack: () => {
+      if (highlightsSwiper && highlightsSwiper.autoplay.running) {
+        highlightsSwiper.autoplay.stop()
+        highlightsSwiperProps.isAutoplayRunning = false
+      }
+    }
+  })
+}
+
+onMounted(async () => {
   initHighlightsSwiper()
+  initAnimations()
 })
 
 // Expose swiper state and functions for parent components
@@ -199,4 +280,4 @@ defineExpose({
   toggleSliderAutoplay,
   updatePaginationElement
 })
-</script> 
+</script>

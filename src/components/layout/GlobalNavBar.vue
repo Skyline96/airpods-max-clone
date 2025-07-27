@@ -1,7 +1,9 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, nextTick } from "vue";
+import { gsap } from "gsap";
 
 const isMenuOpen = ref(false);
+const isMenuVisible = ref(false);
 const activeGlobalNavLinkIndex = ref(null);
 
 const glabalNavLinks = [
@@ -391,11 +393,15 @@ const glabalNavLinks = [
     }
 ]
 
-// Animation refs
+// Animation refs for hamburger menu
 const bottomOpen = ref(null);
 const bottomClose = ref(null);
 const topOpen = ref(null);
 const topClose = ref(null);
+
+// Desktop submenu animation refs
+const desktopSubmenu = ref(null);
+const submenuContent = ref(null);
 
 // Toggle menu
 const toggleMenu = () => {
@@ -404,7 +410,7 @@ const toggleMenu = () => {
     document.body.style.setProperty("overflow", isMenuOpen.value ? "hidden" : "auto");
 };
 
-// Watch state change and trigger animation
+// Hamburger icon animation (mobile)
 watch(isMenuOpen, (newState) => {
     if (newState) {
         bottomOpen.value?.beginElement();
@@ -412,6 +418,110 @@ watch(isMenuOpen, (newState) => {
     } else {
         bottomClose.value?.beginElement();
         topClose.value?.beginElement();
+    }
+});
+
+// Animate desktop submenu height and fade on content change
+let lastHeight = 0;
+watch(activeGlobalNavLinkIndex, async (newIndex, oldIndex) => {
+    if (
+        desktopSubmenu.value &&
+        submenuContent.value &&
+        isMenuOpen.value &&
+        newIndex !== null &&
+        oldIndex !== null &&
+        newIndex !== oldIndex
+    ) {
+        // 1. Set container height to current height
+        lastHeight = desktopSubmenu.value.offsetHeight;
+        desktopSubmenu.value.style.height = lastHeight + "px";
+
+        // 2. Fade out current content first
+        gsap.to(submenuContent.value, {
+            opacity: 0,
+            duration: 0.1,
+            ease: "power2.in"
+        });
+
+        // 3. Wait for DOM update
+        await nextTick();
+
+        // 4. Measure new content height
+        const newHeight = submenuContent.value.offsetHeight;
+
+        // 5. Create timeline for coordinated animations
+        const tl = gsap.timeline({
+            onComplete: () => {
+                desktopSubmenu.value.style.height = "auto";
+            }
+        });
+
+        // 6. Animate height and fade in content
+        tl.to(desktopSubmenu.value, {
+            height: newHeight,
+            duration: 0.3,
+            ease: "power2.inOut"
+        })
+        .fromTo(submenuContent.value, 
+            { opacity: 0 },
+            { opacity: 1, duration: 0.3, ease: "power2.out" },
+            "-=0.2"
+        ); // Start fade-in slightly before height animation completes
+    }
+});
+
+// Animate fade/slide in on first open and out on close
+watch(isMenuOpen, async (open, prevOpen) => {
+    if (
+        open &&
+        desktopSubmenu.value &&
+        submenuContent.value &&
+        activeGlobalNavLinkIndex.value !== null &&
+        !prevOpen
+    ) {
+        // Show the menu immediately
+        isMenuVisible.value = true;
+        
+        // Set initial state
+        gsap.set(desktopSubmenu.value, { opacity: 1, y: 0, height: 0 });
+        gsap.set(submenuContent.value, { opacity: 0, y: -20 });
+
+        // Wait for DOM update and measure height
+        await nextTick();
+        const newHeight = submenuContent.value.offsetHeight;
+
+        // Animate height and content
+        gsap.to(desktopSubmenu.value, {
+            height: newHeight,
+            duration: 0.3,
+            ease: "power2.out",
+            onComplete: () => {
+                desktopSubmenu.value.style.height = "auto";
+            }
+        });
+        gsap.to(submenuContent.value, {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: "power2.out"
+        });
+    }
+    // On close, animate height to 0 and fade out
+    if (!open && prevOpen && desktopSubmenu.value) {
+        const currentHeight = desktopSubmenu.value.offsetHeight;
+        gsap.set(desktopSubmenu.value, { height: currentHeight });
+        
+        gsap.to(desktopSubmenu.value, {
+            height: 0,
+            opacity: 0,
+            y: -20,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => {
+                desktopSubmenu.value.style.height = "auto";
+                isMenuVisible.value = false;
+            }
+        });
     }
 });
 </script>
@@ -429,7 +539,7 @@ watch(isMenuOpen, (newState) => {
                     </svg>
                 </a>
                 <a v-for="(glabalNavLink, index) in glabalNavLinks" :key="index" href="" class="leading-[44px] px-2"
-                    @mouseenter="() => { activeGlobalNavLinkIndex = index; isMenuOpen = true }">
+                    @mouseenter="() => { activeGlobalNavLinkIndex = index; isMenuOpen = true; isMenuVisible = true }">
                     {{ glabalNavLink.text }}
                 </a>
                 <a href="" class="leading-[44px] px-2">
@@ -446,6 +556,43 @@ watch(isMenuOpen, (newState) => {
                         </path>
                     </svg>
                 </a>
+            </div>
+        </div>
+        <!-- Desktop Submenu: always rendered, only content changes -->
+        <div
+            class="hidden md:block absolute top-full left-0 w-full bg-white border-t border-gray-200 z-20"
+            ref="desktopSubmenu"
+            v-show="isMenuVisible"
+            style="overflow: hidden"
+        >
+            <div
+                :key="activeGlobalNavLinkIndex"
+                ref="submenuContent"
+            >
+                <div v-if="activeGlobalNavLinkIndex !== null">
+                    <div class="container max-w-screen-lg mx-auto px-6 py-10">
+                        <div class="flex flex-row">
+                            <div v-for="(subMenuGroup, index) in glabalNavLinks[activeGlobalNavLinkIndex].subMenuGroups" :key="index"
+                                class="pe-[44px] last:pe-0">
+                                <h2 class="text-xs text-[rgb(110,110,115)] leading-normal pb-4">
+                                    {{ subMenuGroup.header }}
+                                </h2>
+                                <ul v-if="subMenuGroup.elevatedLinks" class="mb-4">
+                                    <li v-for="(elevatedLink, index) in subMenuGroup.elevatedLinks" :key="index">
+                                        <a href=""
+                                            class="block text-2xl leading-snug font-semibold">{{
+                                                elevatedLink.text }}</a>
+                                    </li>
+                                </ul>
+                                <ul v-if="subMenuGroup.links">
+                                    <li v-for="(groupLink, index) in subMenuGroup.links" :key="index"><a href=""
+                                            class="text-xs leading-normal font-semibold">{{
+                                                groupLink.text }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="relative w-full max-w-full h-fit bg-[#fafafc] z-[1]">
@@ -513,7 +660,7 @@ watch(isMenuOpen, (newState) => {
                     </svg>
                 </button>
             </div>
-            <div v-if="isMenuOpen" class="h-screen md:h-auto bg-white pt-[50px] md:pt-0 px-12 overflow-auto">
+            <div v-show="isMenuOpen" class="md:hidden bg-white pt-[50px] md:pt-0 px-12 overflow-auto">
                 <div v-if="activeGlobalNavLinkIndex === null">
                     <button v-for="(glabalNavLink, index) in glabalNavLinks" :key="index"
                         class="block text-[28px] leading-[47px] font-semibold"
@@ -522,7 +669,7 @@ watch(isMenuOpen, (newState) => {
                 </div>
                 <div v-else-if="glabalNavLinks[activeGlobalNavLinkIndex].subMenuGroups && activeGlobalNavLinkIndex !== null"
                     class="flex flex-col md:flex-row md:max-w-screen-lg md:mx-auto md:pt-10 md:pb-[84px] md:px-6">
-                    <div v-for="subMenuGroup in glabalNavLinks[activeGlobalNavLinkIndex].subMenuGroups"
+                    <div v-for="(subMenuGroup, index) in glabalNavLinks[activeGlobalNavLinkIndex].subMenuGroups" :key="index"
                         class="pb-[50px] md:pb-0 md:pe-[44px] last:pb-20 md:last:pb-0">
                         <h2 :class="{ 'hidden md:block': subMenuGroup.hasOwnProperty('elevatedLinks') }"
                             class="text-[rgb(110,110,115)] text-[17px] md:text-xs leading-tight md:leading-normal pb-4">
@@ -536,7 +683,7 @@ watch(isMenuOpen, (newState) => {
                             </li>
                         </ul>
                         <ul v-if="subMenuGroup.links">
-                            <li v-for="groupLink in subMenuGroup.links"><a href=""
+                            <li v-for="(groupLink, index) in subMenuGroup.links" :key="index"><a href=""
                                     class="text-lg md:text-xs leading-[35px] md:leading-normal font-semibold">{{
                                         groupLink.text }}</a></li>
                         </ul>

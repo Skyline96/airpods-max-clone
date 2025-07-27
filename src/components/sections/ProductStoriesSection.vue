@@ -2,15 +2,15 @@
   <section class="product_stories relative bg-[rgb(245,245,247)] overflow-hidden">
     <div class="anc w-[87.5%] max-w-[1680px] mx-auto">
       <div class="section_header text-center mt-24 sm:mt-40 mb-12 sm:mb-24">
-        <h2
+        <h2 ref="heading"
           class="text-[40px] sm:text-[110px] leading-tight sm:leading-[1.15] sm:tracking-[-3px] text-balance font-semibold">
           Unheard-of sound.</h2>
       </div>
-      <div class="pro_anc_contianer sm:flex items-center mb-16 sm:mb-24">
+      <div ref="proAncContainer" class="pro_anc_contianer sm:flex items-center mb-16 sm:mb-24">
         <div class="relative sm:max-w-[41.66%] sm:ms-[8.33%] overflow-hidden">
           <picture>
             <source media="(max-width: 480px)" srcset="/images/anc/anc_airpod_max_lifestyle_small_2x.jpg 2x">
-            <img src="/images/anc/anc_airpod_max_lifestyle_large.jpg" alt=""
+            <img ref="ancImage" src="/images/anc/anc_airpod_max_lifestyle_large.jpg" alt=""
               class="sm:w-[734px] sm:h-[860px] object-cover scale-110">
           </picture>
         </div>
@@ -31,10 +31,11 @@
           </p>
         </div>
       </div>
-      <div class="transparency_mode_container flex flex-col sm:flex-row">
-        <div class="relative sm:max-w-[25%] sm:ms-[8.33%] sm:mt-60 sm:mb-20">
-          <div
-            class="horizontal_pin box-border flex items-end sm:items-center absolute z-10 -bottom-[156px] sm:bottom-auto left-[200px] sm:-top-9 sm:left-0 sm:-right-[540px] before:content-[''] before:z-10 before:absolute before:w-2 before:h-2 before:right-0 before:bg-[rgb(134,134,139)] before:m-[-3px] before:rounded after:content-[''] after:w-[1.5px] sm:after:w-full after:h-[146px] sm:after:h-[1.5px] after:bg-[rgb(134,134,139)]">
+      <div ref="transparencyContainer" class="transparency_mode_container flex flex-col sm:flex-row z-0">
+        <div class="relative z-10 sm:max-w-[25%] sm:ms-[8.33%] sm:mt-60 sm:mb-20">
+          <div ref="horizontalPin"
+            class="horizontal_pin box-border flex items-end sm:items-center absolute -bottom-[156px] sm:bottom-auto left-[200px] sm:-top-9 sm:left-0 before:content-[''] before:z-10 before:absolute before:w-2 before:h-2 before:right-0 before:bg-[rgb(134,134,139)] before:m-[-3px] before:rounded before:scale-0 before:transition-transform before:duration-300 after:content-[''] after:w-[1.5px] sm:after:w-full after:h-[146px] sm:after:h-[1.5px] after:bg-[rgb(134,134,139)]"
+            style="--before-scale: 0;">
           </div>
           <div class="h-11 sm:h-[60px] mb-3 sm:mb-[18px]">
             <svg class="anc-detail-icon-transparency max-h-full fill-current" viewBox="0 0 31 39.61"
@@ -49,7 +50,7 @@
             Transparency mode, which lets outside sound in so you can interact naturally with your surroundings.
           </p>
         </div>
-        <div class="relative w-0 ms-[8.33%] sm:ms-0 mt-14 sm:mt-0">
+        <div class="relative z-0 w-0 ms-[8.33%] sm:ms-0 mt-14 sm:mt-0">
           <div class="relative sm:left-[138px]">
             <picture>
               <source media="(max-width: 480px)" srcset="/images/anc/anc_airpod_max_close_up_small_2x.png 2x">
@@ -62,3 +63,118 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import { onMounted, useTemplateRef } from 'vue'
+import { gsap, ScrollTrigger } from 'gsap/all'
+
+const headingRef = useTemplateRef('heading')
+const proAncContainerRef = useTemplateRef('proAncContainer')
+const transparencyContainerRef = useTemplateRef('transparencyContainer')
+const ancImageRef = useTemplateRef('ancImage')
+const horizontalPinRef = useTemplateRef('horizontalPin')
+
+const initAnimations = () => {
+  // Register ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger)
+
+  // Set initial states - ensure elements start hidden
+  gsap.set(headingRef.value, { opacity: 0, y: 30 })
+  gsap.set(proAncContainerRef.value.children, { opacity: 0, y: 20 })
+  gsap.set(transparencyContainerRef.value.children, { opacity: 0, y: 30 })
+  gsap.set(horizontalPinRef.value, { right: '0px', opacity: 0 }) // Set initial position and hidden
+
+  // Create timeline for heading animation
+  const headingTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: headingRef.value,
+      start: 'top 80%',
+      end: 'bottom 20%',
+      toggleActions: 'play none none none',
+    }
+  })
+
+  // Animate heading
+  headingTl.to(headingRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  })
+
+  // Create timeline for pro_anc_container animations
+  const proAncTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: proAncContainerRef.value,
+      start: 'top 70%',
+      end: 'bottom 20%',
+      toggleActions: 'play none none none',
+    }
+  })
+
+  // Stagger animate pro_anc_container children
+  proAncTl.to(proAncContainerRef.value.children, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    stagger: 0.2,
+    ease: 'power2.out'
+  })
+
+  // Create timeline for transparency_mode_container animations
+  const transparencyTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: transparencyContainerRef.value,
+      start: 'top 70%', // Start when 30% of container is in view
+      end: 'bottom 20%',
+      toggleActions: 'play none none none', // Play once, no reverse
+    }
+  })
+
+  // Stagger animate transparency_mode_container children
+  transparencyTl.to(transparencyContainerRef.value.children, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    stagger: 0.2,
+    ease: 'power2.out'
+  })
+
+  // Animate horizontal pin at the same time as the image (second child)
+  transparencyTl.to(horizontalPinRef.value, {
+    right: '-540px',
+    opacity: 1,
+    duration: 1,
+    ease: 'power2.out'
+  }, 0.2) // Start at the same time as the second child (image) animation
+
+  // Animate the before pseudo-element (dot) after horizontal pin animation
+  transparencyTl.to(horizontalPinRef.value, {
+    '--before-scale': 1, // Custom property for before pseudo-element scale
+    duration: 0.3,
+    ease: 'power2.out'
+  }, 0.75)
+
+  // Parallax effect for the ANC image
+  gsap.to(ancImageRef.value, {
+    yPercent: -20,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: proAncContainerRef.value,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 0.75,
+    }
+  })
+}
+
+onMounted(() => {
+  initAnimations()
+})
+</script>
+
+<style scoped>
+.horizontal_pin::before {
+  transform: scale(var(--before-scale, 0));
+}
+</style>
